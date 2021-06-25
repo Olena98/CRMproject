@@ -5,8 +5,6 @@ using System.Text;
 
 namespace CRMproject
 {
-
-
     class Client
 
     {
