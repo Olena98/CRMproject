@@ -1,7 +1,5 @@
 ﻿using System;
 
-
-
 namespace CRMproject
 {
     class Program
@@ -22,10 +20,9 @@ namespace CRMproject
             string pnonenumber = Console.ReadLine();
             Guid g = Guid.NewGuid();
             Console.WriteLine(g);
-            
 
+           
         }
-       
     }
 }
 
