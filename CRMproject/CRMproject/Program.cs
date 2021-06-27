@@ -6,22 +6,31 @@ namespace CRMproject
     {
         static void Main(string[] args)
         {
-            Client client = new Client();
+            var continueEnteringNewUsers = true;
 
-            Console.WriteLine("Enter your name:");
-            string name = Console.ReadLine();
-            Console.WriteLine("Enter your last name:");
-            string lastname = Console.ReadLine();
-            Console.WriteLine("Enter your  surname:");
-            string surname = Console.ReadLine();
-            Console.WriteLine("Enter your email:");
-            string email = Console.ReadLine();
-            Console.WriteLine("Enter your phone number:");
-            string pnonenumber = Console.ReadLine();
-            Guid g = Guid.NewGuid();
-            Console.WriteLine(g);
+            while(continueEnteringNewUsers)
+            {
+                Client client = new Client();
 
-           
+                Console.WriteLine("Enter your name:");
+                client.Name = Console.ReadLine();
+                Console.WriteLine("Enter your last name:");
+                client.LastName = Console.ReadLine();
+                Console.WriteLine("Enter your  surname:");
+                client.Surname = Console.ReadLine();
+                Console.WriteLine("Enter your email:");
+                client.Email = Console.ReadLine();
+                Console.WriteLine("Enter your phone number:");
+                client.PhoneNumber = Console.ReadLine();
+                client.Id = Guid.NewGuid();
+
+                DataBase.Clients.Add(client);
+
+                Console.WriteLine("Continue entering new users? (Y - to yes):");
+                continueEnteringNewUsers = Console.ReadLine().ToLower() == "y";
+            }
+
+            Console.WriteLine($"Count of users: {DataBase.Clients.Count}");
         }
     }
 }

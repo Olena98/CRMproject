@@ -7,7 +7,6 @@ namespace CRMproject
     class DataBase
     {
         public static readonly List<Client> Clients = new List<Client>();
-        
     }
    
 }
