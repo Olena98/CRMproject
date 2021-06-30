@@ -2,15 +2,23 @@
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace CRMproject
 {
     class DataBase
     {
-        public static readonly List<Client> Clients = new List<Client>();
-    }
-   
+        private static readonly List<Client> Clients = new List<Client>();
+        public void AddClient (Client client)
+        {
+            Clients.Add(client);
+        }
+        public void GetClient(string name) 
+        {
+             new Client { Name = name };
+        }
+        
+    } 
 }
-
 
 
 

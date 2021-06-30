@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Xml;
 
 namespace CRMproject
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-            var continueEnteringNewUsers = true;
+            var continueEnteringNewUser = true;
 
-            while(continueEnteringNewUsers)
+            while (continueEnteringNewUser)
             {
                 Client client = new Client();
 
@@ -24,15 +26,44 @@ namespace CRMproject
                 client.PhoneNumber = Console.ReadLine();
                 client.Id = Guid.NewGuid();
 
-                DataBase.Clients.Add(client);
 
+              
                 Console.WriteLine("Continue entering new users? (Y - to yes):");
-                continueEnteringNewUsers = Console.ReadLine().ToLower() == "y";
-            }
+                continueEnteringNewUser = Console.ReadLine().ToLower() == "y";
 
-            Console.WriteLine($"Count of users: {DataBase.Clients.Count}");
+
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.Load("C://Users//Olena//clients.xml");
+                XmlElement xRoot = xDoc.DocumentElement;
+
+                XmlElement clientElem = xDoc.CreateElement("client");
+
+                XmlAttribute nameAttr = xDoc.CreateAttribute("name");
+
+                XmlElement lastnameElem = xDoc.CreateElement("lastname");
+                XmlElement surnameElem = xDoc.CreateElement("surname");
+                XmlElement emailElem = xDoc.CreateElement("email");
+                XmlElement pnonenumberElem = xDoc.CreateElement("phonenumber");
+
+                clientElem.Attributes.Append(nameAttr);
+                clientElem.AppendChild(lastnameElem);
+                clientElem.AppendChild(surnameElem);
+                clientElem.AppendChild(emailElem);
+                clientElem.AppendChild(pnonenumberElem);
+
+                xRoot.AppendChild(clientElem);
+                xDoc.Save("C://Users//Olena//clients.xml");
+
+                Console.WriteLine($"Count of users: {client}");
+                Console.ReadLine();
+
+
+                   
+            }
+                
+            }
         }
     }
-}
+
 
 
