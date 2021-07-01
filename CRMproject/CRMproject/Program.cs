@@ -39,17 +39,26 @@ namespace CRMproject
                 XmlElement clientElem = xDoc.CreateElement("client");
 
                 XmlAttribute nameAttr = xDoc.CreateAttribute("name");
+                nameAttr.Value = client.Name;
+                XmlAttribute lastnameAttr = xDoc.CreateAttribute("lastname");
+                lastnameAttr.Value = client.LastName;
+                XmlAttribute surnameAttr = xDoc.CreateAttribute("surname");
+                surnameAttr.Value = client.Surname;
+                XmlAttribute emailAttr = xDoc.CreateAttribute("email");
+                emailAttr.Value = client.Email;
+                XmlAttribute phonenumberAttr = xDoc.CreateAttribute("phonenumber");
+                phonenumberAttr.Value = client.PhoneNumber;
 
                 XmlElement lastnameElem = xDoc.CreateElement("lastname");
                 XmlElement surnameElem = xDoc.CreateElement("surname");
                 XmlElement emailElem = xDoc.CreateElement("email");
                 XmlElement pnonenumberElem = xDoc.CreateElement("phonenumber");
-
+                
                 clientElem.Attributes.Append(nameAttr);
-                clientElem.AppendChild(lastnameElem);
-                clientElem.AppendChild(surnameElem);
-                clientElem.AppendChild(emailElem);
-                clientElem.AppendChild(pnonenumberElem);
+                clientElem.Attributes.Append(lastnameAttr);
+                clientElem.Attributes.Append(surnameAttr);
+                clientElem.Attributes.Append(emailAttr);
+                clientElem.Attributes.Append(phonenumberAttr);
 
                 xRoot.AppendChild(clientElem);
                 xDoc.Save("C://Users//Olena//clients.xml");
