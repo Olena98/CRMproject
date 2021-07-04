@@ -36,13 +36,17 @@ namespace CRMproject
 
                 string path = ("C://Users//Olena//clients.xml");
                 FileInfo fileInf = new FileInfo(path);
+                XmlDocument xDoc = new XmlDocument();
                 if (fileInf.Exists)
                 {
-                    fileInf.Create();
+                    xDoc.Load(path);
                 }
-
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.Load("C://Users//Olena//clients.xml");
+                else
+                {
+                    var rootElement = xDoc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
+                    xDoc.AppendChild(rootElement);
+                }
+                
                 XmlElement xRoot = xDoc.DocumentElement;
 
 
@@ -71,7 +75,7 @@ namespace CRMproject
                 clientElem.Attributes.Append(phonenumberAttr);
 
                 xRoot.AppendChild(clientElem);
-                xDoc.Save("C://Users//Olena//clients.xml");
+                xDoc.Save(path);
 
                 Console.WriteLine($"Count of users: {client}");
                 Console.ReadLine();
