@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Xml;
+using System.IO;
+
 
 namespace CRMproject
 {
@@ -32,9 +34,17 @@ namespace CRMproject
                 continueEnteringNewUser = Console.ReadLine().ToLower() == "y";
 
 
+                string path = ("C://Users//Olena//clients.xml");
+                FileInfo fileInf = new FileInfo(path);
+                if (fileInf.Exists)
+                {
+                    fileInf.Create();
+                }
+
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.Load("C://Users//Olena//clients.xml");
                 XmlElement xRoot = xDoc.DocumentElement;
+
 
                 XmlElement clientElem = xDoc.CreateElement("client");
 
@@ -65,12 +75,13 @@ namespace CRMproject
 
                 Console.WriteLine($"Count of users: {client}");
                 Console.ReadLine();
+               
 
 
-                   
+
             }
-                
-            }
+
+        }
         }
     }
 
