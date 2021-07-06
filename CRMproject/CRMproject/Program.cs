@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Xml;
 using System.IO;
-
+using System.Text;
+using System.Collections.Generic;
 
 namespace CRMproject
 {
@@ -27,13 +28,9 @@ namespace CRMproject
                 Console.WriteLine("Enter your phone number:");
                 client.PhoneNumber = Console.ReadLine();
                 client.Id = Guid.NewGuid();
-
-
-              
+            
                 Console.WriteLine("Continue entering new users? (Y - to yes):");
                 continueEnteringNewUser = Console.ReadLine().ToLower() == "y";
-
-
                 string path = ("C://Users//Olena//clients.xml");
                 FileInfo fileInf = new FileInfo(path);
                 XmlDocument xDoc = new XmlDocument();
@@ -46,9 +43,21 @@ namespace CRMproject
                     var rootElement = xDoc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
                     xDoc.AppendChild(rootElement);
                 }
-                
+                try
+                {
+                    xDoc.Load(path);
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("An exception was thrown!");
+                }
+                finally
+                {
+                    Console.WriteLine("Final blok");
+                    var rootElement = xDoc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
+                   
+                }
                 XmlElement xRoot = xDoc.DocumentElement;
-
 
                 XmlElement clientElem = xDoc.CreateElement("client");
 
@@ -67,7 +76,7 @@ namespace CRMproject
                 XmlElement surnameElem = xDoc.CreateElement("surname");
                 XmlElement emailElem = xDoc.CreateElement("email");
                 XmlElement pnonenumberElem = xDoc.CreateElement("phonenumber");
-                
+
                 clientElem.Attributes.Append(nameAttr);
                 clientElem.Attributes.Append(lastnameAttr);
                 clientElem.Attributes.Append(surnameAttr);
@@ -79,15 +88,10 @@ namespace CRMproject
 
                 Console.WriteLine($"Count of users: {client}");
                 Console.ReadLine();
-               
-
-
 
             }
-
-        }
         }
     }
 
-
+}
 
