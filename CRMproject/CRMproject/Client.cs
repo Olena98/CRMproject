@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CRMproject
 {
-    
+    [Serializable]
     class Client
     {
         public Guid Id { get; set; }
