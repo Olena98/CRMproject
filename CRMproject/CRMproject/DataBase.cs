@@ -15,12 +15,13 @@ namespace CRMproject
             Clients.Add(client);
         }
         public static void SaveClient(Client client)
-        {         
+        {
+
             string path = ("C://Users//Olena//clients.xml");
             FileInfo fileInf = new FileInfo(path);
             XmlDocument xDoc = new XmlDocument();
             XmlNode rootElement = null;
-            
+                   
             try
             {
                 if (fileInf.Exists)
@@ -40,7 +41,7 @@ namespace CRMproject
                 xDoc.AppendChild(rootElement);
                 Console.WriteLine("An exception was thrown!");
             }
-         
+
             XmlElement clientElem = xDoc.CreateElement("client");
 
             XmlAttribute nameAttr = xDoc.CreateAttribute("name");
@@ -53,19 +54,25 @@ namespace CRMproject
             emailAttr.Value = client.Email;
             XmlAttribute phonenumberAttr = xDoc.CreateAttribute("phonenumber");
             phonenumberAttr.Value = client.PhoneNumber;
+            XmlAttribute guidAttr = xDoc.CreateAttribute("guid");
+            guidAttr.Value = client.Id.ToString();
 
             clientElem.Attributes.Append(nameAttr);
             clientElem.Attributes.Append(lastnameAttr);
             clientElem.Attributes.Append(surnameAttr);
             clientElem.Attributes.Append(emailAttr);
             clientElem.Attributes.Append(phonenumberAttr);
+            clientElem.Attributes.Append(guidAttr);
 
             rootElement.AppendChild(clientElem);
             xDoc.Save(path);
 
             Console.WriteLine($"Count of users: {Clients.Count}");
+           
         }
     }
 }
+
+
 
 

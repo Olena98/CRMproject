@@ -4,7 +4,6 @@ using System.Text;
 
 namespace CRMproject
 {
-    [Serializable]
     class Client
     {
         public Guid Id { get; set; }
@@ -13,8 +12,7 @@ namespace CRMproject
         public string PhoneNumber { get; set; }
         public string Surname { get; set; }
         public string LastName { get; set; }
-
-        
+       
     }
 }
 

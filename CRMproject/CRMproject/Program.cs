@@ -59,7 +59,6 @@ namespace CRMproject
                     
                     DataBase.SaveClient(client);
                    
-
                     Console.WriteLine("Continue entering new users? (Y - to yes):");
                     continueEnteringNewUser = Console.ReadLine().ToLower() == "y";
  
@@ -90,9 +89,7 @@ namespace CRMproject
 
         static void Main(string[] args)
         {
-            UserMenu();
-          
-        }
-    
+            UserMenu();          
+        }   
     }
 }
