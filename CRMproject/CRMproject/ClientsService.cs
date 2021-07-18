@@ -6,7 +6,7 @@ namespace CRMproject
 {
     class ClientsService
     {
-       public static void EnterClient()
+        public static Client AddNewClient()
         {
             Client client = new Client();
 
@@ -22,7 +22,9 @@ namespace CRMproject
             client.PhoneNumber = Console.ReadLine();
             Console.WriteLine("Your guid Id");                             
             client.Id = Guid.NewGuid();
-            Console.WriteLine(client.Id);        
+            Console.WriteLine(client.Id);
+            
+            return client; 
         }
     }
 }

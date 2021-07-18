@@ -21,7 +21,7 @@ namespace CRMproject
             FileInfo fileInf = new FileInfo(path);
             XmlDocument xDoc = new XmlDocument();
             XmlNode rootElement = null;
-                   
+
             try
             {
                 if (fileInf.Exists)
@@ -66,9 +66,27 @@ namespace CRMproject
 
             rootElement.AppendChild(clientElem);
             xDoc.Save(path);
+            ReadXmlFile(path);
+
+        
+        }
+
+        public static void ReadXmlFile(string path)
+        {
+            var doc = new XmlDocument();
+            doc.Load(path);
+            var xRoot = doc.DocumentElement;
+            foreach (XmlNode xnode in xRoot)
+            {
+                if (xnode.Attributes.Count > 0)
+                {
+                    XmlNode attr = xnode.Attributes.GetNamedItem("name");
+                    if (attr != null)
+                        Console.WriteLine(attr.Value);
+                }
+            }
 
             Console.WriteLine($"Count of users: {Clients.Count}");
-           
         }
     }
 }

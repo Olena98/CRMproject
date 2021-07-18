@@ -47,49 +47,48 @@ namespace CRMproject
                         break;                    
                 }
             }
-            static void AddNewClient()
+
+        static void AddNewClient()
+        {
+            var continueEnteringNewUser = true;                
+
+            while (continueEnteringNewUser)
             {
-                var continueEnteringNewUser = true;                
-
-                while (continueEnteringNewUser)
-                {
-                    Client client = new Client();
-
-                    ClientsService.EnterClient();
+                var client = ClientsService.AddNewClient();
                     
-                    DataBase.SaveClient(client);
-                   
-                    Console.WriteLine("Continue entering new users? (Y - to yes):");
-                    continueEnteringNewUser = Console.ReadLine().ToLower() == "y";
- 
-                }
-            }
-            static void SearchClient()
-            {
-                Console.WriteLine("Please, enter data to search for a client");
-                Console.ReadLine();               
-            }
-            static void EditClient() 
-            {
-                Console.WriteLine("Please, enter the data to change the client");
-                Console.ReadLine();
-            }
-            static void AddProduct() 
-            {
-                Console.WriteLine("Please, enter new product");
-                Console.ReadLine();
-              
-            }
-            static void ProductList() 
-            {
-                Console.WriteLine("Here you can view a list of your products");
-                Console.ReadLine();               
+                DataBase.SaveClient(client);
+
+                Console.WriteLine("Continue entering new users? (Y - to yes):");
+                continueEnteringNewUser = Console.ReadLine().ToLower() == "y";
+             
             }
         }
-
-        static void Main(string[] args)
+        static void SearchClient()
         {
-            UserMenu();          
+            Console.WriteLine("Please, enter data to search for a client");
+            Console.ReadLine();
+        }
+        static void EditClient()
+        {
+            Console.WriteLine("Please, enter the data to change the client");
+            Console.ReadLine();
+        }
+        static void AddProduct()
+        {
+            Console.WriteLine("Please, enter new product");
+            Console.ReadLine();
+
+        }
+        static void ProductList()
+        {
+            Console.WriteLine("Here you can view a list of your products");
+            Console.ReadLine();
+        }
+    }
+    static void Main(string[] args)
+        {
+            UserMenu();
+
         }   
     }
 }
