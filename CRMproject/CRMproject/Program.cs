@@ -87,8 +87,10 @@ namespace CRMproject
     }
     static void Main(string[] args)
         {
+            DataBase.Initialize();
             UserMenu();
-
+           
+           
         }   
     }
 }
