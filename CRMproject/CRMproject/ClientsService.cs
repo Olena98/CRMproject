@@ -1,30 +1,20 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CRMproject
 {
     class ClientsService
     {
-        public static Client AddNewClient()
+        public static void AddNewClient(Client client)
         {
-            Client client = new Client();
+            DataBase.AddClient(client);
+        }
+        public static List<Client> GetClientsByName(string name)
+        {
+            name = name.ToUpper();
+            return DataBase.Clients.Where(c => c.Name.ToUpper().Contains(name)).ToList();
 
-            Console.WriteLine("Enter your name:");
-            client.Name = Console.ReadLine();
-            Console.WriteLine("Enter your last name:");
-            client.LastName = Console.ReadLine();
-            Console.WriteLine("Enter your  surname:");
-            client.Surname = Console.ReadLine();
-            Console.WriteLine("Enter your email:");
-            client.Email = Console.ReadLine();
-            Console.WriteLine("Enter your phone number:");
-            client.PhoneNumber = Console.ReadLine();
-            Console.WriteLine("Your guid Id");                             
-            client.Id = Guid.NewGuid();
-            Console.WriteLine(client.Id);
-            
-            return client; 
         }
     }
 }
