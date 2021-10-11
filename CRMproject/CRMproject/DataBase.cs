@@ -116,6 +116,11 @@ namespace CRMproject
                     {
                         client.PhoneNumber = attrPhonenumber.Value;                      
                     }
+                    XmlNode attrGuid = xnode.Attributes.GetNamedItem("guid");
+                    if (attrGuid != null)
+                    {
+                        client.Id = Guid.Parse(attrGuid.Value);
+                    }
                     clients.Add(client);
                 }                                             
             }

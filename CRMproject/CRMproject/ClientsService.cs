@@ -26,5 +26,10 @@ namespace CRMproject
         {
             return DataBase.Clients.Where(c => c.PhoneNumber.Contains(phonenumber)).ToList();
         }
+        public static List<Client> GetClientsById(Guid guid) 
+        {
+           
+            return DataBase.Clients.Where(c => c.Id.ToString().Contains(guid.ToString())).ToList();
+        }
     }
 }

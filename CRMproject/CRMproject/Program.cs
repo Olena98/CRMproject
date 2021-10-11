@@ -153,7 +153,7 @@ namespace CRMproject
                         var resultPhone = ClientsService.GetClientsByPhone(phoneOfClient);
                         if (resultPhone.Count == 0)
                         {
-                            Console.WriteLine("Not such email");
+                            Console.WriteLine("Not such phone number");
                         }
                         else if (resultPhone.Count != 0)
                         {
@@ -174,6 +174,35 @@ namespace CRMproject
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
                         break;
+                    case "4":
+                        Console.WriteLine($"Please, enter your id to search for a client");
+                        Guid guidOfClient = Guid.Parse(Console.ReadLine());                 
+                        var resultId = ClientsService.GetClientsById(guidOfClient);
+                        if (resultId.Count == 0)
+                        {
+                            Console.WriteLine("Not such id");
+                        }
+                        else if (resultId.Count != 0)
+                        {
+                            Console.WriteLine("Count of users: " + resultId.Count);
+
+                          foreach (Client c in resultId)
+                            {
+                                Console.WriteLine(c.Name);
+                                Console.WriteLine(c.LastName);
+                                Console.WriteLine(c.Surname);
+                                Console.WriteLine(c.PhoneNumber);
+                                Console.WriteLine(c.Email);
+                                Console.WriteLine(c.Id);
+                                Console.WriteLine();
+
+                            }
+                        }
+                       
+                        Console.WriteLine("Return menu? (Y - to yes):");
+                        searchofclient = Console.ReadLine().ToLower() == "y";
+                         break;
+
                 }
             }
         }
