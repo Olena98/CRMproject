@@ -16,5 +16,12 @@ namespace CRMproject
             return DataBase.Clients.Where(c => c.Name.ToUpper().Contains(name)).ToList();
 
         }
+        public static List<Client> GetClientsByEmail(string email) 
+        {
+            email = email.ToUpper();
+            return DataBase.Clients.Where(c => c.Email.ToUpper().Contains(email)).ToList();
+
+        }
+        
     }
 }
