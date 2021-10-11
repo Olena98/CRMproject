@@ -147,9 +147,34 @@ namespace CRMproject
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
                         break;
-                    
-                }
+                    case "3":
+                        Console.WriteLine($"Please, enter phone number to search for a client");
+                        string phoneOfClient = Console.ReadLine();
+                        var resultPhone = ClientsService.GetClientsByPhone(phoneOfClient);
+                        if (resultPhone.Count == 0)
+                        {
+                            Console.WriteLine("Not such email");
+                        }
+                        else if (resultPhone.Count != 0)
+                        {
+                            Console.WriteLine("Count of users: " + resultPhone.Count);
 
+                            foreach (Client c in resultPhone)
+                            {
+                                Console.WriteLine(c.Name);
+                                Console.WriteLine(c.LastName);
+                                Console.WriteLine(c.Surname);
+                                Console.WriteLine(c.PhoneNumber);
+                                Console.WriteLine(c.Email);
+                                Console.WriteLine(c.Id);
+                                Console.WriteLine();
+
+                            }
+                        }
+                        Console.WriteLine("Return menu? (Y - to yes):");
+                        searchofclient = Console.ReadLine().ToLower() == "y";
+                        break;
+                }
             }
         }
 
