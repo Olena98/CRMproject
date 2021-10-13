@@ -9,23 +9,17 @@ namespace CRMproject
 {
     class DataBase
     {
-        private static List<Client> clients = new List<Client>();
+        public static List<Client> Clients { get;  private set; }
 
         public static void Initialize()
         {
-            clients = ReadXmlFile("C://Users//Olena//clients.xml"); 
-
-
-            foreach (Client c in clients)
-            {
-
-                Console.WriteLine(c.Name);
-            }
+            Clients = ReadXmlFile("C://Users//Olena//clients.xml");
         }
         
-        public void AddClient(Client client)
+        public static void AddClient(Client client)
         {
-            clients.Add(client);
+            SaveClient(client);
+            Clients.Add(client);
         }
         public static void SaveClient(Client client)
         {
@@ -121,6 +115,11 @@ namespace CRMproject
                     if (attrPhonenumber != null)
                     {
                         client.PhoneNumber = attrPhonenumber.Value;                      
+                    }
+                    XmlNode attrGuid = xnode.Attributes.GetNamedItem("guid");
+                    if (attrGuid != null)
+                    {
+                        client.Id = Guid.Parse(attrGuid.Value);
                     }
                     clients.Add(client);
                 }                                             
