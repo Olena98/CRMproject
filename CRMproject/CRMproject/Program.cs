@@ -55,6 +55,7 @@ namespace CRMproject
                 }
             }
         }
+
         static void AddNewClient()
         {
             var continueEnteringNewUser = true;
@@ -83,7 +84,6 @@ namespace CRMproject
         }
 
         static void SearchClient()
-
         {
             var searchofclient = true;
             while (searchofclient)
@@ -98,25 +98,7 @@ namespace CRMproject
                         Console.WriteLine($"Please, enter name to search for a client");
                         string nameOfClient = Console.ReadLine();
                         var result = ClientsService.GetClientsByName(nameOfClient);
-                        if (result.Count == 0)
-                        {
-                            Console.WriteLine("Don`t find users");
-                        }
-                        else if (result.Count != 0)
-                        {
-                            Console.WriteLine("Count of users: " + result.Count);
-
-                            foreach (Client c in result)
-                            {
-                                Console.WriteLine(c.Name);
-                                Console.WriteLine(c.LastName);
-                                Console.WriteLine(c.Surname);
-                                Console.WriteLine(c.PhoneNumber);
-                                Console.WriteLine(c.Email);
-                                Console.WriteLine(c.Id);
-                                Console.WriteLine();
-                            }
-                        }
+                        OutputUsersList(result);
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
                         break;
@@ -124,26 +106,7 @@ namespace CRMproject
                         Console.WriteLine($"Please, enter email to search for a client");
                         string emailOfClient = Console.ReadLine();
                         var resultEmail = ClientsService.GetClientsByEmail(emailOfClient);
-                        if (resultEmail.Count == 0)
-                        {
-                            Console.WriteLine("Not such email");
-                        }
-                        else if (resultEmail.Count != 0)
-                        {
-                            Console.WriteLine("Count of users: " + resultEmail.Count);
-
-                            foreach (Client c in resultEmail)
-                            {
-                                Console.WriteLine(c.Name);
-                                Console.WriteLine(c.LastName);
-                                Console.WriteLine(c.Surname);
-                                Console.WriteLine(c.PhoneNumber);
-                                Console.WriteLine(c.Email);
-                                Console.WriteLine(c.Id);
-                                Console.WriteLine();
-
-                            }
-                        }
+                        OutputUsersList(resultEmail);
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
                         break;
@@ -151,79 +114,60 @@ namespace CRMproject
                         Console.WriteLine($"Please, enter phone number to search for a client");
                         string phoneOfClient = Console.ReadLine();
                         var resultPhone = ClientsService.GetClientsByPhone(phoneOfClient);
-                        if (resultPhone.Count == 0)
-                        {
-                            Console.WriteLine("Not such phone number");
-                        }
-                        else if (resultPhone.Count != 0)
-                        {
-                            Console.WriteLine("Count of users: " + resultPhone.Count);
-
-                            foreach (Client c in resultPhone)
-                            {
-                                Console.WriteLine(c.Name);
-                                Console.WriteLine(c.LastName);
-                                Console.WriteLine(c.Surname);
-                                Console.WriteLine(c.PhoneNumber);
-                                Console.WriteLine(c.Email);
-                                Console.WriteLine(c.Id);
-                                Console.WriteLine();
-
-                            }
-                        }
+                        OutputUsersList(resultPhone);
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
                         break;
                     case "4":
                         Console.WriteLine($"Please, enter your id to search for a client");
-                        Guid guidOfClient = Guid.Parse(Console.ReadLine());                 
+                        Guid guidOfClient = Guid.Parse(Console.ReadLine());
                         var resultId = ClientsService.GetClientsById(guidOfClient);
-                        if (resultId.Count == 0)
-                        {
-                            Console.WriteLine("Not such id");
-                        }
-                        else if (resultId.Count != 0)
-                        {
-                            Console.WriteLine("Count of users: " + resultId.Count);
-
-                          foreach (Client c in resultId)
-                            {
-                                Console.WriteLine(c.Name);
-                                Console.WriteLine(c.LastName);
-                                Console.WriteLine(c.Surname);
-                                Console.WriteLine(c.PhoneNumber);
-                                Console.WriteLine(c.Email);
-                                Console.WriteLine(c.Id);
-                                Console.WriteLine();
-
-                            }
-                        }
-                       
+                        OutputUsersList(resultId);
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
-                         break;
+                        break;
+                }
+            }
+        }
+
+        static void OutputUsersList(List<Client> clients)
+        {
+            if (clients.Count == 0)
+            {
+                Console.WriteLine("No results");
+            }
+            else
+            {
+                Console.WriteLine("Count of users: " + clients.Count);
+
+                foreach (Client c in clients)
+                {
+                    Console.WriteLine(c.Name);
+                    Console.WriteLine(c.LastName);
+                    Console.WriteLine(c.Surname);
+                    Console.WriteLine(c.PhoneNumber);
+                    Console.WriteLine(c.Email);
+                    Console.WriteLine(c.Id);
+                    Console.WriteLine();
 
                 }
             }
         }
 
         static void EditClient()
-
         {
-            Console.WriteLine("Please, enter the data to change the client");
-            Console.ReadLine();
+            throw new NotImplementedException();
         }
+
         static void AddProduct()
         {
-            Console.WriteLine("Please, enter new product");
-            Console.ReadLine();
-
+            throw new NotImplementedException();
         }
+
         static void ProductList()
         {
-            Console.WriteLine("Here you can view a list of your products");
-            Console.ReadLine();
-        }
+            throw new NotImplementedException();
+        }       
     }
 }
 
