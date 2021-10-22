@@ -36,7 +36,7 @@ namespace CRMproject
                         break;
                     case "3":
                         Console.WriteLine("You have chosen edit of a client");
-                        EditClient();
+                        EditClient(DataBase.Clients);
                         Console.WriteLine("Return menu? (Y - to yes):");
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
@@ -154,9 +154,11 @@ namespace CRMproject
             }
         }
 
-        static void EditClient()
+        static void EditClient(List<Client>clients)
         {
-            throw new NotImplementedException();
+            string clientsEdit = Console.ReadLine();
+            var result = clients.ToString().Insert(0, clientsEdit);
+            Console.WriteLine(result);
         }
 
         static void AddProduct()
