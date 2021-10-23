@@ -167,8 +167,9 @@ namespace CRMproject
         }
 
         static void ProductList()
-        {
-            throw new NotImplementedException();
+        {            
+            ProductsDataBase.AddProductsList();
+           
         }       
     }
 }
