@@ -10,16 +10,16 @@ namespace CRMproject
         public string Description { get; set; }
         public int Price { get; set; }
         public int ProductNumber { get; set; }
-        public bool Existense { get; set; }
+        public bool Existence { get; set; }
         public Guid Id { get; set; }
-
+        public Products() { }
         public Products(string productName, string description, int price, int productNumber, bool existense, Guid guid) 
         {
             ProductName = productName;
             Description = description;
             Price = price;
             ProductNumber = productNumber;
-            Existense = existense;
+            Existence = existense;
             Id = guid;
 
             Console.WriteLine("Product name: " + productName + "Description: " + description + "Price: " + price + "Product number: " + productNumber

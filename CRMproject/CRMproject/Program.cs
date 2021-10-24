@@ -8,6 +8,7 @@ namespace CRMproject
         static void Main(string[] args)
         {
             DataBase.Initialize();
+            ProductsDataBase.Initialize();
             UserMenu();
         }
 
@@ -163,7 +164,29 @@ namespace CRMproject
 
         static void AddProduct()
         {
-            throw new NotImplementedException();
+            var addProduct = true;
+            while (addProduct)
+            {
+                var products = new Products();
+                Console.WriteLine("Please, enter product name: ");
+                products.ProductName = Console.ReadLine();
+                Console.WriteLine("Please, enter product description: ");
+                products.Description = Console.ReadLine();
+                Console.WriteLine("Please, enter product price: ");
+                products.Price.ToString(Console.ReadLine());
+                Console.WriteLine("Please, enter product number: ");
+                products.ProductNumber.ToString(Console.ReadLine());
+                Console.WriteLine("Please, indicate product availability, enter true or false: ");
+                products.Existence = Convert.ToBoolean(Console.ReadLine());
+                Console.WriteLine("Products guid id: ");
+                products.Id = Guid.NewGuid();
+                Console.WriteLine(products.Id);
+
+                ProductService.AddNewProduct(products);
+
+                Console.WriteLine("Continue entering new users? (Y - to yes):");
+                addProduct = Console.ReadLine().ToLower() == "y";
+            }
         }
 
         static void ProductList()
