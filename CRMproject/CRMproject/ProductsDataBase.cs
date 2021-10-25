@@ -9,24 +9,11 @@ namespace CRMproject
     class ProductsDataBase
     {
         public static List<Products> Product { get; private set; }
-        public static void AddProductsList()
-        {
-            List<Products> Products = new List<Products>();
-            Products.Add(new Products("Microwave","Type: solo, Color: black, Weight: 11 kg ", 2519, 83284179, true, Guid.NewGuid()));
-            Products.Add(new Products("Blender", "Type: hand, Color: black/silver, Weight: 1,98 kg ", 2899, 232178845, true, Guid.NewGuid()));
-            Products.Add(new Products("Iron", "Type: with steam, Color: black/golden, Weight: 1,66 kg ", 2999, 81776523, true, Guid.NewGuid()));
-            Products.Add(new Products("Grill", "Type: solo , Color: black/silver, Weight: 5,2 kg ", 4999, 41020184, true, Guid.NewGuid()));
-            Products.Add(new Products("Vacuum cleaner", "Type: dry , Color: black/purple, Weight: 4,4 kg ", 2499, 35068047, true, Guid.NewGuid()));
-            Products.Add(new Products("Hair dryer", "Type: solo , Color: black, Weight: 0,85 kg ", 1599, 146833528, true, Guid.NewGuid()));
-            Products.Add(new Products("Fridge", "Type: solo , Color: silver, Weight: 67 kg ", 11999, 92106032, true, Guid.NewGuid()));
-            Products.Add(new Products("Washing machine", "Type: solo , Color: white, Weight: 60 kg ", 11999, 292994538, true, Guid.NewGuid()));
-            Products.Add(new Products("Coffee machine", "Type: solo , Color: black/silver, Weight: 11,5 kg ", 21499, 18848130, true, Guid.NewGuid()));
-            Products.Add(new Products("Electric toothbrush", "Type: hand , Color: dark blue, Weight: 0,45 kg ", 9999, 302980148, true, Guid.NewGuid()));
-            
-        }
+       
         public static void Initialize()
         {
             Product = ReadXmlFile("C://Users//Olena//Documents//products.xml");
+           
         }
         public static void AddNewProduct(Products products) 
         {
@@ -113,12 +100,12 @@ namespace CRMproject
                     XmlNode attrPrice = xnode.Attributes.GetNamedItem("price");
                     if (attrPrice != null)
                     {
-                        products.Price.ToString(attrPrice.Value);
+                        products.Price = attrPrice.Value;
                     }
                     XmlNode attrProductNumber = xnode.Attributes.GetNamedItem("productNumber");
                     if (attrProductNumber != null)
                     {
-                        products.ProductNumber.ToString(attrProductNumber.Value);
+                        products.ProductNumber = attrProductNumber.Value;
                     }
                     XmlNode attrExistence = xnode.Attributes.GetNamedItem("existence");
                     if (attrExistence != null)

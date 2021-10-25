@@ -18,7 +18,7 @@ namespace CRMproject
             while (returnUserMenu)
             {
                 Console.WriteLine("\t1.Add new client\n\t2.Search client\n\t3.Edit client");
-                Console.WriteLine("\t4.Add product\n\t5.Product list");
+                Console.WriteLine("\t4.Add product\n\t5.Search product");
                 Console.WriteLine("Enter the item number");
                 string selection = Console.ReadLine();
                 switch (selection)
@@ -48,8 +48,8 @@ namespace CRMproject
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
                     case "5":
-                        Console.WriteLine("You have chosen a product list");
-                        ProductList();
+                        Console.WriteLine("You have chosen by search product");
+                        SearchProduct();
                         Console.WriteLine("Return menu? (Y - to yes):");
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
@@ -173,9 +173,9 @@ namespace CRMproject
                 Console.WriteLine("Please, enter product description: ");
                 products.Description = Console.ReadLine();
                 Console.WriteLine("Please, enter product price: ");
-                products.Price.ToString(Console.ReadLine());
+                products.Price = Console.ReadLine();
                 Console.WriteLine("Please, enter product number: ");
-                products.ProductNumber.ToString(Console.ReadLine());
+                products.ProductNumber = Console.ReadLine();
                 Console.WriteLine("Please, indicate product availability, enter true or false: ");
                 products.Existence = Convert.ToBoolean(Console.ReadLine());
                 Console.WriteLine("Products guid id: ");
@@ -184,16 +184,58 @@ namespace CRMproject
 
                 ProductService.AddNewProduct(products);
 
-                Console.WriteLine("Continue entering new users? (Y - to yes):");
+                Console.WriteLine("Continue entering new products? (Y - to yes):");
                 addProduct = Console.ReadLine().ToLower() == "y";
             }
         }
 
-        static void ProductList()
-        {            
-            ProductsDataBase.AddProductsList();
+        static void SearchProduct()
+        {
+            var searchproduct = true;
+            while (searchproduct) 
+            {
+                Console.WriteLine("\t1.Search product by name\n\t2.Search product by description\n\t3.Search product by price" +
+                        "\n\t4.Search product by number\n\t5.Search product bi existence\n\t6.Search product by id");
+                Console.WriteLine("Enter the item number: ");
+                string itemNumber = Console.ReadLine();
+                switch (itemNumber)
+                {
+                    case "1":
+
+                        Console.WriteLine($"Please, enter name to search for a product");
+                        string nameOfProduct = Console.ReadLine();
+                        var result = ProductService.GetProductsByName(nameOfProduct);
+                        OutputProductList(result);
+                        Console.WriteLine("Return menu? (Y - to yes):");
+                        searchproduct = Console.ReadLine().ToLower() == "y";
+                        break;
+                }
+            }
            
-        }       
+        }
+        static void OutputProductList(List<Products> products)
+        {
+            if (products.Count == 0)
+            {
+                Console.WriteLine("No results");
+            }
+            else
+            {
+                Console.WriteLine("Count of users: " + products.Count);
+
+                foreach (Products p in products)
+                {
+                    Console.WriteLine(p.ProductName);
+                    Console.WriteLine(p.Description);
+                    Console.WriteLine(p.Price);
+                    Console.WriteLine(p.ProductNumber);
+                    Console.WriteLine(p.Existence);
+                    Console.WriteLine(p.Id);
+                    Console.WriteLine();
+
+                }
+            }
+        }
     }
 }
 
