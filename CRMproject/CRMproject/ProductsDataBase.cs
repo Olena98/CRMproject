@@ -15,13 +15,13 @@ namespace CRMproject
             Products = ReadXmlFile("C://Users//Olena//Documents//products.xml");
            
         }
-        public static void AddNewProduct(Product products) 
+        public static void AddNewProduct(Product product) 
         {
-            SaveProduct(products);
-            Products.Add(products);
+            SaveProduct(product);
+            Products.Add(product);
           
         }
-        public static void SaveProduct(Product products) 
+        public static void SaveProduct(Product product) 
         {
             string path = ("C://Users//Olena//Documents//products.xml");
             FileInfo fileInf = new FileInfo(path);
@@ -50,17 +50,17 @@ namespace CRMproject
             XmlElement productElem = xDoc.CreateElement("product");
 
             XmlAttribute productNameAttr = xDoc.CreateAttribute("productName");
-            productNameAttr.Value = products.ProductName;
+            productNameAttr.Value = product.ProductName;
             XmlAttribute descriptionAttr = xDoc.CreateAttribute("description");
-            descriptionAttr.Value = products.Description;
+            descriptionAttr.Value = product.Description;
             XmlAttribute priceAttr = xDoc.CreateAttribute("price");
-            priceAttr.Value = products.Price.ToString();
+            priceAttr.Value = product.Price.ToString();
             XmlAttribute productNumberAttr = xDoc.CreateAttribute("productNumber");
-            productNumberAttr.Value = products.ProductNumber.ToString();
+            productNumberAttr.Value = product.ProductNumber.ToString();
             XmlAttribute existenceAttr = xDoc.CreateAttribute("existence");
-            existenceAttr.Value = products.Existence.ToString();
+            existenceAttr.Value = product.Existence.ToString();
             XmlAttribute guidAttr = xDoc.CreateAttribute("guid");
-            guidAttr.Value = products.Id.ToString();
+            guidAttr.Value = product.Id.ToString();
 
             productElem.Attributes.Append(productNameAttr);
             productElem.Attributes.Append(descriptionAttr);
@@ -71,7 +71,6 @@ namespace CRMproject
 
             rootElement.AppendChild(productElem);
             xDoc.Save(path);
-            ReadXmlFile(path);
         }
         public static List<Product> ReadXmlFile(string path)
         {
