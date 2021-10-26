@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CRMproject
 {
-    class ProductService
+    class ProductsService
     {
         public static void AddNewProduct(Product products) 
         {
