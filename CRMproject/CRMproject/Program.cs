@@ -167,7 +167,7 @@ namespace CRMproject
             var addProduct = true;
             while (addProduct)
             {
-                var products = new Products();
+                var products = new Product();
                 Console.WriteLine("Please, enter product name: ");
                 products.ProductName = Console.ReadLine();
                 Console.WriteLine("Please, enter product description: ");
@@ -253,7 +253,7 @@ namespace CRMproject
             }
            
         }
-        static void OutputProductList(List<Products> products)
+        static void OutputProductList(List<Product> products)
         {
             if (products.Count == 0)
             {
@@ -263,7 +263,7 @@ namespace CRMproject
             {
                 Console.WriteLine("Count of users: " + products.Count);
 
-                foreach (Products p in products)
+                foreach (Product p in products)
                 {
                     Console.WriteLine(p.ProductName);
                     Console.WriteLine(p.Description);

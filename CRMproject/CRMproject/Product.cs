@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CRMproject
 {
-    class Products
+    class Product
     {
         public string ProductName { get; set; }
         public string Description { get; set; }

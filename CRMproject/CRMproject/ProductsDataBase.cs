@@ -8,20 +8,20 @@ namespace CRMproject
 {
     class ProductsDataBase
     {
-        public static List<Products> Product { get; private set; }
+        public static List<Product> Product { get; private set; }
        
         public static void Initialize()
         {
             Product = ReadXmlFile("C://Users//Olena//Documents//products.xml");
            
         }
-        public static void AddNewProduct(Products products) 
+        public static void AddNewProduct(Product products) 
         {
             SaveProduct(products);
             Product.Add(products);
           
         }
-        public static void SaveProduct(Products products) 
+        public static void SaveProduct(Product products) 
         {
             string path = ("C://Users//Olena//Documents//products.xml");
             FileInfo fileInf = new FileInfo(path);
@@ -73,10 +73,10 @@ namespace CRMproject
             xDoc.Save(path);
             ReadXmlFile(path);
         }
-        public static List<Products> ReadXmlFile(string path)
+        public static List<Product> ReadXmlFile(string path)
         {
 
-            List<Products> product = new List<Products>();
+            List<Product> product = new List<Product>();
             var doc = new XmlDocument();
             doc.Load(path);
             var xRoot = doc.DocumentElement;
@@ -85,7 +85,7 @@ namespace CRMproject
 
                 if (xnode.Attributes.Count > 0)
                 {
-                    Products products = new Products();
+                    Product products = new Product();
 
                     XmlNode attrProductName = xnode.Attributes.GetNamedItem("productName");
                     if (attrProductName != null)
