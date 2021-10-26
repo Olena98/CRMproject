@@ -8,17 +8,17 @@ namespace CRMproject
 {
     class ProductsDataBase
     {
-        public static List<Product> Product { get; private set; }
+        public static List<Product> Products { get; private set; }
        
         public static void Initialize()
         {
-            Product = ReadXmlFile("C://Users//Olena//Documents//products.xml");
+            Products = ReadXmlFile("C://Users//Olena//Documents//products.xml");
            
         }
         public static void AddNewProduct(Product products) 
         {
             SaveProduct(products);
-            Product.Add(products);
+            Products.Add(products);
           
         }
         public static void SaveProduct(Product products) 
