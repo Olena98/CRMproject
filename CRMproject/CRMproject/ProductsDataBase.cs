@@ -76,7 +76,7 @@ namespace CRMproject
         public static List<Product> ReadXmlFile(string path)
         {
 
-            List<Product> product = new List<Product>();
+            List<Product> products = new List<Product>();
             var doc = new XmlDocument();
             doc.Load(path);
             var xRoot = doc.DocumentElement;
@@ -85,42 +85,42 @@ namespace CRMproject
 
                 if (xnode.Attributes.Count > 0)
                 {
-                    Product products = new Product();
+                    Product product = new Product();
 
                     XmlNode attrProductName = xnode.Attributes.GetNamedItem("productName");
                     if (attrProductName != null)
                     {
-                        products.ProductName = attrProductName.Value;
+                        product.ProductName = attrProductName.Value;
                     }
                     XmlNode attrDescription = xnode.Attributes.GetNamedItem("description");
                     if (attrDescription != null)
                     {
-                        products.Description = attrDescription.Value;
+                        product.Description = attrDescription.Value;
                     }
                     XmlNode attrPrice = xnode.Attributes.GetNamedItem("price");
                     if (attrPrice != null)
                     {
-                        products.Price = attrPrice.Value;
+                        product.Price = attrPrice.Value;
                     }
                     XmlNode attrProductNumber = xnode.Attributes.GetNamedItem("productNumber");
                     if (attrProductNumber != null)
                     {
-                        products.ProductNumber = attrProductNumber.Value;
+                        product.ProductNumber = attrProductNumber.Value;
                     }
                     XmlNode attrExistence = xnode.Attributes.GetNamedItem("existence");
                     if (attrExistence != null)
                     {
-                         products.Existence = Convert.ToBoolean(attrExistence.Value);
+                         product.Existence = Convert.ToBoolean(attrExistence.Value);
                     }
                     XmlNode attrGuid = xnode.Attributes.GetNamedItem("guid");
                     if (attrGuid != null)
                     {
-                        products.Id = Guid.Parse(attrGuid.Value);
+                        product.Id = Guid.Parse(attrGuid.Value);
                     }
-                    product.Add(products);
+                    products.Add(product);
                 }
             }
-            return product;
+            return products;
         }
 
     }
