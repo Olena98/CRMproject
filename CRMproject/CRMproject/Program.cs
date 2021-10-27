@@ -173,7 +173,7 @@ namespace CRMproject
                 Console.WriteLine("Please, enter product description: ");
                 products.Description = Console.ReadLine();
                 Console.WriteLine("Please, enter product price: ");
-                products.Price = Console.ReadLine();
+                products.Price = Convert.ToDecimal(Console.ReadLine());
                 Console.WriteLine("Please, enter product number: ");
                 products.ProductNumber = Console.ReadLine();
                 Console.WriteLine("Please, indicate product availability, enter true or false: ");
@@ -218,7 +218,7 @@ namespace CRMproject
                         break;
                     case "3":
                         Console.WriteLine($"Please, enter price to search for a product");
-                        string priceOfProduct = Console.ReadLine();
+                        decimal priceOfProduct = Convert.ToDecimal(Console.ReadLine());
                         var resultPrice = ProductService.GetProductsByPrice(priceOfProduct);
                         OutputProductList(resultPrice);
                         Console.WriteLine("Return menu? (Y - to yes):");

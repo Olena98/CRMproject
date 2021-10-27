@@ -23,7 +23,7 @@ namespace CRMproject
         }
         public static void SaveProduct(Product product) 
         {
-            string path = ("C://Users//Olena//Documents//products.xml");
+            const string path = ("C://Users//Olena//Documents//products.xml");
             FileInfo fileInf = new FileInfo(path);
             XmlDocument xDoc = new XmlDocument();
             XmlNode rootElement = null;
@@ -99,7 +99,7 @@ namespace CRMproject
                     XmlNode attrPrice = xnode.Attributes.GetNamedItem("price");
                     if (attrPrice != null)
                     {
-                        product.Price = attrPrice.Value;
+                        product.Price = Convert.ToDecimal(attrPrice.Value);
                     }
                     XmlNode attrProductNumber = xnode.Attributes.GetNamedItem("productNumber");
                     if (attrProductNumber != null)

@@ -29,7 +29,7 @@ namespace CRMproject
         public static List<Client> GetClientsById(Guid guid) 
         {
            
-            return DataBase.Clients.Where(c => c.Id.ToString().Contains(guid.ToString())).ToList();
+            return DataBase.Clients.Where(c => c.Id == guid).ToList();
         }
     }
 }

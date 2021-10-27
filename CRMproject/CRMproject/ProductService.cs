@@ -22,9 +22,9 @@ namespace CRMproject
             description = description.ToUpper();
             return ProductsDataBase.Products.Where(p => p.Description.ToUpper().Contains(description)).ToList();
         }
-        public static List<Product> GetProductsByPrice(string price) 
+        public static List<Product> GetProductsByPrice(decimal price) 
         {
-            return ProductsDataBase.Products.Where(p => p.Price.ToUpper().Contains(price)).ToList();
+            return ProductsDataBase.Products.Where(p => p.Price.ToString().ToUpper().Contains(price.ToString())).ToList();
         }
         public static List<Product> GetProductsByNumber(string number) 
         {
@@ -33,11 +33,11 @@ namespace CRMproject
         public static List<Product> GetProductsByExistence(bool existence) 
         {
             
-            return ProductsDataBase.Products.Where(p => p.Existence.ToString().Contains(existence.ToString())).ToList();
+            return ProductsDataBase.Products.Where(p => p.Existence == existence).ToList();
         }
         public static List<Product> GetProductsById(Guid guid) 
         {
-            return ProductsDataBase.Products.Where(p => p.Id.ToString().Contains(guid.ToString())).ToList();
+            return ProductsDataBase.Products.Where(p => p.Id == guid).ToList();
         }
     }
 }

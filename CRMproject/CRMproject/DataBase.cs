@@ -24,7 +24,7 @@ namespace CRMproject
         public static void SaveClient(Client client)
         {
            
-            string path = ("C://Users//Olena//clients.xml");
+            const string path = ("C://Users//Olena//clients.xml");
             FileInfo fileInf = new FileInfo(path);
             XmlDocument xDoc = new XmlDocument();
             XmlNode rootElement = null;
@@ -73,7 +73,7 @@ namespace CRMproject
 
             rootElement.AppendChild(clientElem);
             xDoc.Save(path);
-            ReadXmlFile(path);
+            
        
         }
 
