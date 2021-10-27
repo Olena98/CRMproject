@@ -182,7 +182,7 @@ namespace CRMproject
                 products.Id = Guid.NewGuid();
                 Console.WriteLine(products.Id);
 
-                ProductsService.AddNewProduct(products);
+                ProductService.AddNewProduct(products);
 
                 Console.WriteLine("Continue entering new products? (Y - to yes):");
                 addProduct = Console.ReadLine().ToLower() == "y";
@@ -203,7 +203,7 @@ namespace CRMproject
                     case "1":
                         Console.WriteLine($"Please, enter name to search for a product");
                         string nameOfProduct = Console.ReadLine();
-                        var result = ProductsService.GetProductsByName(nameOfProduct);
+                        var result = ProductService.GetProductsByName(nameOfProduct);
                         OutputProductList(result);
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
@@ -211,7 +211,7 @@ namespace CRMproject
                     case "2":
                         Console.WriteLine($"Please, enter description to search for a product");
                         string descriptionOfProduct = Console.ReadLine();
-                        var resultDescription = ProductsService.GetProductsByDescription(descriptionOfProduct);
+                        var resultDescription = ProductService.GetProductsByDescription(descriptionOfProduct);
                         OutputProductList(resultDescription);
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
@@ -219,7 +219,7 @@ namespace CRMproject
                     case "3":
                         Console.WriteLine($"Please, enter price to search for a product");
                         string priceOfProduct = Console.ReadLine();
-                        var resultPrice = ProductsService.GetProductsByPrice(priceOfProduct);
+                        var resultPrice = ProductService.GetProductsByPrice(priceOfProduct);
                         OutputProductList(resultPrice);
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
@@ -227,15 +227,15 @@ namespace CRMproject
                     case "4":
                         Console.WriteLine($"Please, enter number to search for a product");
                         string numberOfProduct = Console.ReadLine();
-                        var resultNumber = ProductsService.GetProductsByNumber(numberOfProduct);
+                        var resultNumber = ProductService.GetProductsByNumber(numberOfProduct);
                         OutputProductList(resultNumber);
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
                     case "5":
-                        Console.WriteLine($"Please, enter existence to search for a product");
+                        Console.WriteLine($"Please, enter existence to search for a product (true or false)");
                         bool existenceOfProduct = Convert.ToBoolean(Console.ReadLine());
-                        var resultExistence = ProductsService.GetProductsByExistence(existenceOfProduct);
+                        var resultExistence = ProductService.GetProductsByExistence(existenceOfProduct);
                         OutputProductList(resultExistence);
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
@@ -243,7 +243,7 @@ namespace CRMproject
                     case "6":
                         Console.WriteLine($"Please, enter description to search for a product");
                         Guid guidOfProduct = Guid.Parse(Console.ReadLine());
-                        var resultGuid = ProductsService.GetProductsById(guidOfProduct);
+                        var resultGuid = ProductService.GetProductsById(guidOfProduct);
                         OutputProductList(resultGuid);
                         Console.WriteLine("Return menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
@@ -261,7 +261,7 @@ namespace CRMproject
             }
             else
             {
-                Console.WriteLine("Count of users: " + products.Count);
+                Console.WriteLine("Count of products: " + products.Count);
 
                 foreach (Product p in products)
                 {
