@@ -26,9 +26,9 @@ namespace CRMproject
         {
             return ProductsDataBase.Products.Where(p => p.Price.ToString().ToUpper().Contains(price.ToString())).ToList();
         }
-        public static List<Product> GetProductsByNumber(string number) 
+        public static List<Product> GetProductsByNumber(int number) 
         {
-            return ProductsDataBase.Products.Where(p => p.ProductNumber.ToUpper().Contains(number)).ToList();
+            return ProductsDataBase.Products.Where(p => p.ProductNumber.ToString().ToUpper().Contains(number.ToString())).ToList();
         }
         public static List<Product> GetProductsByExistence(bool existence) 
         {

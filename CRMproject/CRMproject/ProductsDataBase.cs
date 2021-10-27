@@ -104,7 +104,7 @@ namespace CRMproject
                     XmlNode attrProductNumber = xnode.Attributes.GetNamedItem("productNumber");
                     if (attrProductNumber != null)
                     {
-                        product.ProductNumber = attrProductNumber.Value;
+                        product.ProductNumber = Convert.ToInt32(attrProductNumber.Value);
                     }
                     XmlNode attrExistence = xnode.Attributes.GetNamedItem("existence");
                     if (attrExistence != null)

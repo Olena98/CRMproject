@@ -18,7 +18,7 @@ namespace CRMproject
             while (returnUserMenu)
             {
                 Console.WriteLine("Main menu\n\t1.Add new client\n\t2.Search client\n\t3.Edit client");
-                Console.WriteLine("\t4.Add product\n\t5.Search product");
+                Console.WriteLine("\t4.Add product\n\t5.Search product\n\t6.Clear all");
                 Console.WriteLine("Enter the item number");
                 string selection = Console.ReadLine();
                 switch (selection)
@@ -50,6 +50,12 @@ namespace CRMproject
                     case "5":
                         Console.WriteLine("You have chosen by search product");
                         SearchProduct();
+                        Console.WriteLine("Return to main menu? (Y - to yes):");
+                        returnUserMenu = Console.ReadLine().ToLower() == "y";
+                        break;
+                    case "6":
+                        Console.WriteLine("You have chosen by search product");
+                        Console.Clear();
                         Console.WriteLine("Return to main menu? (Y - to yes):");
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
@@ -175,7 +181,7 @@ namespace CRMproject
                 Console.WriteLine("Please, enter product price: ");
                 products.Price = Convert.ToDecimal(Console.ReadLine());
                 Console.WriteLine("Please, enter product number: ");
-                products.ProductNumber = Console.ReadLine();
+                products.ProductNumber = Convert.ToInt32(Console.ReadLine());
                 Console.WriteLine("Please, indicate product availability, enter true or false: ");
                 products.Existence = Convert.ToBoolean(Console.ReadLine());
                 Console.WriteLine("Products guid id: ");
@@ -226,8 +232,8 @@ namespace CRMproject
                         break;
                     case "4":
                         Console.WriteLine($"Please, enter number to search for a product");
-                        string numberOfProduct = Console.ReadLine();
-                        var resultNumber = ProductService.GetProductsByNumber(numberOfProduct);
+                        int numberOfProduct = int.Parse(Console.ReadLine());
+                        var resultNumber = ProductService.GetProductsByNumber(numberOfProduct);                        
                         OutputProductList(resultNumber);
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
