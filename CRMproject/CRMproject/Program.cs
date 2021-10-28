@@ -210,6 +210,7 @@ namespace CRMproject
                         Console.WriteLine($"Please, enter name to search for a product");
                         string nameOfProduct = Console.ReadLine();
                         var result = ProductService.GetProductsByName(nameOfProduct);
+                        String.IsNullOrWhiteSpace(nameOfProduct);
                         OutputProductList(result);
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
@@ -218,30 +219,46 @@ namespace CRMproject
                         Console.WriteLine($"Please, enter description to search for a product");
                         string descriptionOfProduct = Console.ReadLine();
                         var resultDescription = ProductService.GetProductsByDescription(descriptionOfProduct);
+                        String.IsNullOrWhiteSpace(descriptionOfProduct);
                         OutputProductList(resultDescription);
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
                     case "3":
                         Console.WriteLine($"Please, enter price to search for a product");
-                        decimal priceOfProduct = Convert.ToDecimal(Console.ReadLine());
-                        var resultPrice = ProductService.GetProductsByPrice(priceOfProduct);
+                        decimal price;
+                        bool  priceOfProduct = decimal.TryParse(Console.ReadLine(), out price);
+                        var resultPrice = ProductService.GetProductsByPrice(price);
                         OutputProductList(resultPrice);
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
                     case "4":
                         Console.WriteLine($"Please, enter number to search for a product");
-                        int numberOfProduct = int.Parse(Console.ReadLine());
-                        var resultNumber = ProductService.GetProductsByNumber(numberOfProduct);                        
-                        OutputProductList(resultNumber);
+                        int number;
+                        bool numberOfProduct = int.TryParse(Console.ReadLine(), out number);                         
+                        var resultNumber = ProductService.GetProductsByNumber(number);                       
+                        if (numberOfProduct == false ) 
+                        {
+                            Random random = new Random();
+                            int randomNumber = random.Next(0, 2000000);
+                            for (int i = 0; i < 1; i++)
+                            {
+                                Console.WriteLine("Your new products number: " + randomNumber);                             
+                            }                                                                            
+                        }
+                        else 
+                        {
+                            OutputProductList(resultNumber);
+                        }
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
                     case "5":
                         Console.WriteLine($"Please, enter existence to search for a product (true or false)");
-                        bool existenceOfProduct = Convert.ToBoolean(Console.ReadLine());
-                        var resultExistence = ProductService.GetProductsByExistence(existenceOfProduct);
+                        bool existence;
+                        bool existenceOfProduct = bool.TryParse(Console.ReadLine(), out existence);
+                        var resultExistence = ProductService.GetProductsByExistence(existence);                       
                         OutputProductList(resultExistence);
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
@@ -263,7 +280,8 @@ namespace CRMproject
         {
             if (products.Count == 0)
             {
-                Console.WriteLine("No results");
+                Console.WriteLine("No results, please try again");
+                
             }
             else
             {
