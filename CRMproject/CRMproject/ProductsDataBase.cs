@@ -9,10 +9,12 @@ namespace CRMproject
     class ProductsDataBase
     {
         public static List<Product> Products { get; private set; }
-       
+
+        private const string xmlPath = "C://Users//Olena//Documents//products.xml";
+
         public static void Initialize()
         {
-            Products = ReadXmlFile("C://Users//Olena//Documents//products.xml");
+            Products = ReadXmlFile(xmlPath);
            
         }
         public static void AddNewProduct(Product product) 
@@ -22,9 +24,8 @@ namespace CRMproject
           
         }
         public static void SaveProduct(Product product) 
-        {
-            const string path = ("C://Users//Olena//Documents//products.xml");
-            FileInfo fileInf = new FileInfo(path);
+        {           
+            FileInfo fileInf = new FileInfo(xmlPath);
             XmlDocument xDoc = new XmlDocument();
             XmlNode rootElement = null;
 
@@ -32,7 +33,7 @@ namespace CRMproject
             {
                 if (fileInf.Exists)
                 {
-                    xDoc.Load(path);
+                    xDoc.Load(xmlPath);
                     rootElement = xDoc.DocumentElement;
                 }
                 else
@@ -70,14 +71,14 @@ namespace CRMproject
             productElem.Attributes.Append(guidAttr);
 
             rootElement.AppendChild(productElem);
-            xDoc.Save(path);
+            xDoc.Save(xmlPath);
         }
-        public static List<Product> ReadXmlFile(string path)
+        public static List<Product> ReadXmlFile(string xmlPath)
         {
 
             List<Product> products = new List<Product>();
             var doc = new XmlDocument();
-            doc.Load(path);
+            doc.Load(xmlPath);
             var xRoot = doc.DocumentElement;
             foreach (XmlNode xnode in xRoot)
             {

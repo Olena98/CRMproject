@@ -104,24 +104,45 @@ namespace CRMproject
                     case "1":
                         Console.WriteLine($"Please, enter name to search for a client");
                         string nameOfClient = Console.ReadLine();
-                        var result = ClientsService.GetClientsByName(nameOfClient);
-                        OutputUsersList(result);
+                        if (String.IsNullOrWhiteSpace(nameOfClient))
+                        {
+                            Console.Write("Incorrect input");
+                        }
+                        else
+                        {
+                            var result = ClientsService.GetClientsByName(nameOfClient);
+                            OutputUsersList(result);
+                        }                        
                         Console.WriteLine("Return to clients search menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
                         break;
                     case "2":
                         Console.WriteLine($"Please, enter email to search for a client");
                         string emailOfClient = Console.ReadLine();
-                        var resultEmail = ClientsService.GetClientsByEmail(emailOfClient);
-                        OutputUsersList(resultEmail);
+                        if (String.IsNullOrWhiteSpace(emailOfClient))
+                        {
+                            Console.Write("Incorrect input");
+                        }
+                        else
+                        {
+                            var resultEmail = ClientsService.GetClientsByEmail(emailOfClient);
+                            OutputUsersList(resultEmail);
+                        }                        
                         Console.WriteLine("Return to clients search menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
                         break;
                     case "3":
                         Console.WriteLine($"Please, enter phone number to search for a client");
                         string phoneOfClient = Console.ReadLine();
-                        var resultPhone = ClientsService.GetClientsByPhone(phoneOfClient);
-                        OutputUsersList(resultPhone);
+                        if (String.IsNullOrWhiteSpace(phoneOfClient))
+                        {
+                            Console.Write("Incorrect input");
+                        }
+                        else
+                        {
+                            var resultPhone = ClientsService.GetClientsByPhone(phoneOfClient);
+                            OutputUsersList(resultPhone);
+                        }
                         Console.WriteLine("Return to clients search menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
                         break;
@@ -149,14 +170,13 @@ namespace CRMproject
 
                 foreach (Client c in clients)
                 {
-                    Console.WriteLine(c.Name);
-                    Console.WriteLine(c.LastName);
-                    Console.WriteLine(c.Surname);
-                    Console.WriteLine(c.PhoneNumber);
-                    Console.WriteLine(c.Email);
-                    Console.WriteLine(c.Id);
+                    Console.WriteLine("Name: " + c.Name);
+                    Console.WriteLine("Last name: " + c.LastName);
+                    Console.WriteLine("Surname: " + c.Surname);
+                    Console.WriteLine("Phone number: " + c.PhoneNumber);
+                    Console.WriteLine("Email: " + c.Email);
+                    Console.WriteLine("Id: " + c.Id);
                     Console.WriteLine();
-
                 }
             }
         }
@@ -179,11 +199,30 @@ namespace CRMproject
                 Console.WriteLine("Please, enter product description: ");
                 products.Description = Console.ReadLine();
                 Console.WriteLine("Please, enter product price: ");
-                products.Price = Convert.ToDecimal(Console.ReadLine());
+                decimal price;
+                bool productsPrice = decimal.TryParse(Console.ReadLine(), out price);
+                products.Price = price;
                 Console.WriteLine("Please, enter product number: ");
-                products.ProductNumber = Convert.ToInt32(Console.ReadLine());
+                int number;
+                bool productNumber = int.TryParse(Console.ReadLine(), out number);
+                if (productNumber != true )
+                {
+                    Random random = new Random();
+                    int randomNumber = random.Next(0, 2000000);
+                    for (int i = 0; i < 1; i++)
+                    {
+                        Console.WriteLine("Your new products number: " + randomNumber);
+                    }
+                    products.ProductNumber = randomNumber;
+                }
+                else 
+                {
+                    products.ProductNumber = number;
+                }
                 Console.WriteLine("Please, indicate product availability, enter true or false: ");
-                products.Existence = Convert.ToBoolean(Console.ReadLine());
+                bool existence;
+                bool productExistence = bool.TryParse(Console.ReadLine(), out existence);
+                products.Existence = existence; 
                 Console.WriteLine("Products guid id: ");
                 products.Id = Guid.NewGuid();
                 Console.WriteLine(products.Id);
@@ -209,18 +248,30 @@ namespace CRMproject
                     case "1":
                         Console.WriteLine($"Please, enter name to search for a product");
                         string nameOfProduct = Console.ReadLine();
-                        var result = ProductService.GetProductsByName(nameOfProduct);
-                        String.IsNullOrWhiteSpace(nameOfProduct);
-                        OutputProductList(result);
+                        if (String.IsNullOrWhiteSpace(nameOfProduct))
+                        {
+                            Console.Write("Incorrect input");
+                        }
+                        else
+                        {
+                            var result = ProductService.GetProductsByName(nameOfProduct);
+                            OutputProductList(result);
+                        }                        
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
                     case "2":
                         Console.WriteLine($"Please, enter description to search for a product");
                         string descriptionOfProduct = Console.ReadLine();
-                        var resultDescription = ProductService.GetProductsByDescription(descriptionOfProduct);
-                        String.IsNullOrWhiteSpace(descriptionOfProduct);
-                        OutputProductList(resultDescription);
+                        if (String.IsNullOrWhiteSpace(descriptionOfProduct))
+                        {
+                            Console.Write("Incorrect input");
+                        }
+                        else
+                        {
+                            var resultDescription = ProductService.GetProductsByDescription(descriptionOfProduct);
+                            OutputProductList(resultDescription);
+                        }                        
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
@@ -237,20 +288,8 @@ namespace CRMproject
                         Console.WriteLine($"Please, enter number to search for a product");
                         int number;
                         bool numberOfProduct = int.TryParse(Console.ReadLine(), out number);                         
-                        var resultNumber = ProductService.GetProductsByNumber(number);                       
-                        if (numberOfProduct == false ) 
-                        {
-                            Random random = new Random();
-                            int randomNumber = random.Next(0, 2000000);
-                            for (int i = 0; i < 1; i++)
-                            {
-                                Console.WriteLine("Your new products number: " + randomNumber);                             
-                            }                                                                            
-                        }
-                        else 
-                        {
-                            OutputProductList(resultNumber);
-                        }
+                        var resultNumber = ProductService.GetProductsByNumber(number);
+                        OutputProductList(resultNumber);
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
@@ -271,17 +310,14 @@ namespace CRMproject
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
-
                 }
-            }
-           
+            }           
         }
         static void OutputProductList(List<Product> products)
         {
             if (products.Count == 0)
             {
-                Console.WriteLine("No results, please try again");
-                
+                Console.WriteLine("No results, please try again");               
             }
             else
             {
@@ -296,7 +332,6 @@ namespace CRMproject
                     Console.WriteLine("Existense: " + p.Existence);
                     Console.WriteLine("Id: " + p.Id);
                     Console.WriteLine();
-
                 }
             }
         }

@@ -11,9 +11,11 @@ namespace CRMproject
     {
         public static List<Client> Clients { get;  private set; }
 
+        private const string xmlPath = "C://Users//Olena//clients.xml";
+
         public static void Initialize()
         {
-            Clients = ReadXmlFile("C://Users//Olena//clients.xml");
+            Clients = ReadXmlFile(xmlPath);
         }
         
         public static void AddClient(Client client)
@@ -24,8 +26,7 @@ namespace CRMproject
         public static void SaveClient(Client client)
         {
            
-            const string path = ("C://Users//Olena//clients.xml");
-            FileInfo fileInf = new FileInfo(path);
+            FileInfo fileInf = new FileInfo(xmlPath);
             XmlDocument xDoc = new XmlDocument();
             XmlNode rootElement = null;
           
@@ -33,7 +34,7 @@ namespace CRMproject
             {
                 if (fileInf.Exists)
                 {
-                    xDoc.Load(path);
+                    xDoc.Load(xmlPath);
                     rootElement = xDoc.DocumentElement;
                 }
                 else
@@ -72,17 +73,17 @@ namespace CRMproject
             clientElem.Attributes.Append(guidAttr);
 
             rootElement.AppendChild(clientElem);
-            xDoc.Save(path);
+            xDoc.Save(xmlPath);
             
        
         }
 
-        public static List<Client> ReadXmlFile(string path)
+        public static List<Client> ReadXmlFile(string xmlPath)
         {
           
             List<Client> clients = new List<Client>();
             var doc = new XmlDocument();
-            doc.Load(path);
+            doc.Load(xmlPath);
             var xRoot = doc.DocumentElement;
             foreach (XmlNode xnode in xRoot)
             {      
