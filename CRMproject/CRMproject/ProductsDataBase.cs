@@ -12,6 +12,8 @@ namespace CRMproject
 
         private const string xmlPath = "C://Users//Olena//Documents//products.xml";
 
+        string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "products.xml");
+
         public static void Initialize()
         {
             Products = ReadXmlFile(xmlPath);

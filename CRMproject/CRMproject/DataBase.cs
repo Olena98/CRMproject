@@ -11,7 +11,9 @@ namespace CRMproject
     {
         public static List<Client> Clients { get;  private set; }
 
-        private const string xmlPath = "C://Users//Olena//clients.xml";
+        private const string xmlPath = "C://Users//Olena//Documents//clients.xml";
+
+        string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "clients.xml");
 
         public static void Initialize()
         {
