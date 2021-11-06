@@ -11,13 +11,18 @@ namespace CRMproject
     {
         public static List<Client> Clients { get;  private set; }
 
-        private const string xmlPath = "C://Users//Olena//Documents//clients.xml";
-
-        string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "clients.xml");
+        private static string xmlPath;
 
         public static void Initialize()
         {
+            xmlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "clients.xml");
+            FileInfo file = new FileInfo(xmlPath);
+            if (!file.Exists)
+            {
+                File.Create(xmlPath);
+            }
             Clients = ReadXmlFile(xmlPath);
+                    
         }
         
         public static void AddClient(Client client)
@@ -41,6 +46,7 @@ namespace CRMproject
                 }
                 else
                 {
+                   
                     rootElement = xDoc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
                     xDoc.AppendChild(rootElement);
                 }

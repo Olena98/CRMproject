@@ -10,14 +10,12 @@ namespace CRMproject
     {
         public static List<Product> Products { get; private set; }
 
-        private const string xmlPath = "C://Users//Olena//Documents//products.xml";
-
-        string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "products.xml");
+        private static string xmlPath;
 
         public static void Initialize()
         {
+            xmlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "products.xml");
             Products = ReadXmlFile(xmlPath);
-           
         }
         public static void AddNewProduct(Product product) 
         {

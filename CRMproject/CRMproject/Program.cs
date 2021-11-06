@@ -194,31 +194,38 @@ namespace CRMproject
             while (addProduct)
             {
                 var products = new Product();
+
                 Console.WriteLine("Please, enter product name: ");
                 products.ProductName = Console.ReadLine();
+
                 Console.WriteLine("Please, enter product description: ");
                 products.Description = Console.ReadLine();
+
                 Console.WriteLine("Please, enter product price: ");
                 decimal price;
-                bool productsPrice = decimal.TryParse(Console.ReadLine(), out price);
+                while(!decimal.TryParse(Console.ReadLine(), out price))
+                {
+                    Console.WriteLine("Incorrect input. Please try again");
+                }
                 products.Price = price;
+
                 Console.WriteLine("Please, enter product number: ");
                 int number;
-                bool productNumber = int.TryParse(Console.ReadLine(), out number);
-                if (productNumber != true )
+                while (!int.TryParse(Console.ReadLine(), out number))
                 {
-                    Random random = new Random();
-                    int randomNumber = random.Next(0, 2000000);
-                    for (int i = 0; i < 1; i++)
+                    Console.WriteLine("Incorrect input. Please try again");
+                    if (number == 0)
                     {
-                        Console.WriteLine("Your new products number: " + randomNumber);
+                        products.ProductNumber = UniqueNumericNumberHelper.GetUniqueProductNumericNumber();
                     }
-                    products.ProductNumber = randomNumber;
+                    else
+                    {
+                        products.ProductNumber = number;
+                    }
                 }
-                else 
-                {
-                    products.ProductNumber = number;
-                }
+               
+
+
                 Console.WriteLine("Please, indicate product availability, enter true or false: ");
                 bool existence;
                 bool productExistence = bool.TryParse(Console.ReadLine(), out existence);
@@ -313,6 +320,7 @@ namespace CRMproject
                 }
             }           
         }
+
         static void OutputProductList(List<Product> products)
         {
             if (products.Count == 0)
