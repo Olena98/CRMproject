@@ -210,25 +210,23 @@ namespace CRMproject
                 products.Price = price;
 
                 Console.WriteLine("Please, enter product number: ");
-                int number;
-                while (!int.TryParse(Console.ReadLine(), out number))
-                {
-                    Console.WriteLine("Incorrect input. Please try again");
-                    if (number == 0)
-                    {
+                int number;                                 
+                    if (!int.TryParse(Console.ReadLine(), out number))
+                    {                       
                         products.ProductNumber = UniqueNumericNumberHelper.GetUniqueProductNumericNumber();
                     }
                     else
                     {
                         products.ProductNumber = number;
                     }
-                }
+                
                
-
-
                 Console.WriteLine("Please, indicate product availability, enter true or false: ");
                 bool existence;
-                bool productExistence = bool.TryParse(Console.ReadLine(), out existence);
+                while (!bool.TryParse(Console.ReadLine(), out existence)) 
+                {
+                    Console.WriteLine("Incorrect input. Please try again");
+                }                
                 products.Existence = existence; 
                 Console.WriteLine("Products guid id: ");
                 products.Id = Guid.NewGuid();
