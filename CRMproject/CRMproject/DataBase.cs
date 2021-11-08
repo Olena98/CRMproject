@@ -15,12 +15,7 @@ namespace CRMproject
 
         public static void Initialize()
         {
-            xmlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "clients.xml");
-            FileInfo file = new FileInfo(xmlPath);
-            if (!file.Exists)
-            {
-                File.Create(xmlPath);
-            }
+            xmlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "clients.xml");           
             Clients = ReadXmlFile(xmlPath);
                     
         }
@@ -46,7 +41,7 @@ namespace CRMproject
                 }
                 else
                 {
-                   
+                    File.Create(xmlPath);
                     rootElement = xDoc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
                     xDoc.AppendChild(rootElement);
                 }
