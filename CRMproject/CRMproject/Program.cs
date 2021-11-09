@@ -18,7 +18,7 @@ namespace CRMproject
             while (returnUserMenu)
             {
                 Console.WriteLine("Main menu\n\t1.Add new client\n\t2.Search client\n\t3.Edit client");
-                Console.WriteLine("\t4.Add product\n\t5.Search product\n\t6.Clear all");
+                Console.WriteLine("\t4.Add product\n\t5.Search product\n\t6.Add order\n\t7.Search order\n\t8.Clear all");
                 Console.WriteLine("Enter the item number");
                 string selection = Console.ReadLine();
                 switch (selection)
@@ -54,6 +54,18 @@ namespace CRMproject
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
                     case "6":
+                        Console.WriteLine("You have chosen by add order");
+                        
+                        Console.WriteLine("Return to main menu? (Y - to yes):");
+                        returnUserMenu = Console.ReadLine().ToLower() == "y";
+                        break;
+                    case "7":
+                        Console.WriteLine("You have chosen by search order");
+                        
+                        Console.WriteLine("Return to main menu? (Y - to yes):");
+                        returnUserMenu = Console.ReadLine().ToLower() == "y";
+                        break;
+                    case "8":
                         Console.WriteLine("You have chosen by search product");
                         Console.Clear();
                         Console.WriteLine("Return to main menu? (Y - to yes):");
@@ -317,6 +329,35 @@ namespace CRMproject
                         break;
                 }
             }           
+        }
+        static void AddOrder() 
+        {
+            var addOrder = true;
+            while (addOrder) 
+            {
+                var orders = new Order();
+                Console.WriteLine("Please, enter order status, for example: new, paid, is making up, sent, completed, canceled: ");
+                orders.OrderStatus = Console.ReadLine();
+
+                Console.WriteLine("You order date: ");
+                orders.OrderDate = DateTime.Today;
+                Console.WriteLine(orders.OrderDate);
+
+                Console.WriteLine("Orders guid id: ");
+                orders.Id = Guid.NewGuid();
+                Console.WriteLine(orders.Id);
+
+                Console.WriteLine("Please, enter order number: ");
+                int number;
+                if (!int.TryParse(Console.ReadLine(), out number))
+                {
+                    orders.OrderNumber = UniqueNumericNumberHelper.GetUniqueProductNumericNumber();
+                }
+                else
+                {
+                    orders.OrderNumber = number;
+                }
+            }
         }
 
         static void OutputProductList(List<Product> products)

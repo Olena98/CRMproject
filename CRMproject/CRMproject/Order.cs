@@ -4,7 +4,12 @@ using System.Text;
 
 namespace CRMproject
 {
-    class Orders
+    class Order
     {
+        public Guid OrderId { get; set; }
+        public int OrderNumber { get; set; }
+        public DateTime  OrderDate  { get; set; }
+        public string OrderStatus { get; set; }
+        
     }
 }
