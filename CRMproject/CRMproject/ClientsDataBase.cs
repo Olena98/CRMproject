@@ -7,13 +7,17 @@ using System.Text;
 
 namespace CRMproject
 {
-    class DataBase
+    class ClientsDataBase
     {
         public static List<Client> Clients { get;  private set; }
 
+        private static string xmlPath;
+
         public static void Initialize()
         {
-            Clients = ReadXmlFile("C://Users//Olena//clients.xml");
+            xmlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "clients.xml");           
+            Clients = ReadXmlFile(xmlPath);
+                    
         }
         
         public static void AddClient(Client client)
@@ -24,8 +28,7 @@ namespace CRMproject
         public static void SaveClient(Client client)
         {
            
-            string path = ("C://Users//Olena//clients.xml");
-            FileInfo fileInf = new FileInfo(path);
+            FileInfo fileInf = new FileInfo(xmlPath);
             XmlDocument xDoc = new XmlDocument();
             XmlNode rootElement = null;
           
@@ -33,11 +36,11 @@ namespace CRMproject
             {
                 if (fileInf.Exists)
                 {
-                    xDoc.Load(path);
+                    xDoc.Load(xmlPath);
                     rootElement = xDoc.DocumentElement;
                 }
                 else
-                {
+                {                   
                     rootElement = xDoc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
                     xDoc.AppendChild(rootElement);
                 }
@@ -72,17 +75,25 @@ namespace CRMproject
             clientElem.Attributes.Append(guidAttr);
 
             rootElement.AppendChild(clientElem);
-            xDoc.Save(path);
-            ReadXmlFile(path);
+            xDoc.Save(xmlPath);
+            
        
         }
 
-        public static List<Client> ReadXmlFile(string path)
-        {
-          
+        public static List<Client> ReadXmlFile(string xmlPath)
+        {       
             List<Client> clients = new List<Client>();
-            var doc = new XmlDocument();
-            doc.Load(path);
+            var doc = new XmlDocument();           
+            if (!File.Exists(xmlPath))
+            {
+                File.Create(xmlPath);
+                doc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
+                doc.CreateElement("clients");                       
+            }
+            else
+            {
+                doc.Load(xmlPath);
+            }
             var xRoot = doc.DocumentElement;
             foreach (XmlNode xnode in xRoot)
             {      
