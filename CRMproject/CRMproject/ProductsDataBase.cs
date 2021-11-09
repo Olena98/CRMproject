@@ -79,7 +79,16 @@ namespace CRMproject
 
             List<Product> products = new List<Product>();
             var doc = new XmlDocument();
-            doc.Load(xmlPath);
+           
+            if (File.Exists(xmlPath))
+            {
+                doc.Load(xmlPath);
+            }
+            else
+            {
+                File.Create(xmlPath);
+                doc.CreateElement("products");
+            }
             var xRoot = doc.DocumentElement;
             foreach (XmlNode xnode in xRoot)
             {
@@ -123,6 +132,6 @@ namespace CRMproject
             }
             return products;
         }
-
+      
     }
 }

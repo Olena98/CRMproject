@@ -7,7 +7,7 @@ namespace CRMproject
     {
         static void Main(string[] args)
         {
-            DataBase.Initialize();
+            ClientsDataBase.Initialize();
             ProductsDataBase.Initialize();
             UserMenu();
         }
@@ -37,7 +37,7 @@ namespace CRMproject
                         break;
                     case "3":
                         Console.WriteLine("You have chosen edit of a client");
-                        EditClient(DataBase.Clients);
+                        EditClient(ClientsDataBase.Clients);
                         Console.WriteLine("Return to main menu? (Y - to yes):");
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;

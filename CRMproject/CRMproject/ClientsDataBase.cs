@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CRMproject
 {
-    class DataBase
+    class ClientsDataBase
     {
         public static List<Client> Clients { get;  private set; }
 
@@ -40,8 +40,7 @@ namespace CRMproject
                     rootElement = xDoc.DocumentElement;
                 }
                 else
-                {
-                    File.Create(xmlPath);
+                {                   
                     rootElement = xDoc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
                     xDoc.AppendChild(rootElement);
                 }
@@ -82,11 +81,19 @@ namespace CRMproject
         }
 
         public static List<Client> ReadXmlFile(string xmlPath)
-        {
-          
+        {       
             List<Client> clients = new List<Client>();
-            var doc = new XmlDocument();
-            doc.Load(xmlPath);
+            var doc = new XmlDocument();           
+            if (!File.Exists(xmlPath))
+            {
+                File.Create(xmlPath);
+                doc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
+                doc.CreateElement("clients");                       
+            }
+            else
+            {
+                doc.Load(xmlPath);
+            }
             var xRoot = doc.DocumentElement;
             foreach (XmlNode xnode in xRoot)
             {      
