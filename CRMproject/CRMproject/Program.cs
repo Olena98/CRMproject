@@ -55,13 +55,13 @@ namespace CRMproject
                         break;
                     case "6":
                         Console.WriteLine("You have chosen by add order");
-                        
+                        AddOrder();
                         Console.WriteLine("Return to main menu? (Y - to yes):");
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
                     case "7":
                         Console.WriteLine("You have chosen by search order");
-                        
+                        SearchOrder();
                         Console.WriteLine("Return to main menu? (Y - to yes):");
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
@@ -344,8 +344,8 @@ namespace CRMproject
                 Console.WriteLine(orders.OrderDate);
 
                 Console.WriteLine("Orders guid id: ");
-                orders.Id = Guid.NewGuid();
-                Console.WriteLine(orders.Id);
+                orders.OrderId = Guid.NewGuid();
+                Console.WriteLine(orders.OrderId);
 
                 Console.WriteLine("Please, enter order number: ");
                 int number;
@@ -357,6 +357,59 @@ namespace CRMproject
                 {
                     orders.OrderNumber = number;
                 }
+            }
+        }
+        static void SearchOrder() 
+        {
+            var searchOrder = true;
+            while (searchOrder) 
+            {
+                Console.WriteLine("Orders search\n\t1.Search order by date\n\t2.Search order by status\n\t3.Search order by id");
+                Console.WriteLine("Enter the item number: ");
+                string itemNumber = Console.ReadLine();
+                switch (itemNumber) 
+                {
+                    case "1":
+                        Console.WriteLine($"Please, enter name to search for a product");
+                        DateTime dateOfOrder = DateTime.Parse(Console.ReadLine());
+                        if (String.IsNullOrWhiteSpace(dateOfOrder.ToString()))
+                        {
+                            Console.Write("Incorrect input");
+                        }
+                        else
+                        {
+                            var result = OrderService.GetOrdersByDate(dateOfOrder);
+                            OutputOrderList(result);
+                        }
+                        break;
+
+                }
+
+
+
+            }
+        
+        
+        }
+        static void OutputOrderList(List<Order> orders) 
+        {
+            if(orders.Count == 0) 
+            {
+                Console.WriteLine("No results, please try again");
+            }
+            else 
+            {
+                Console.WriteLine("Count of orders: " + orders.Count);
+
+                foreach (Order o in orders)
+                {
+                    Console.WriteLine("Order date: " + o.OrderDate);                   
+                    Console.WriteLine("Order number " + o.OrderNumber);
+                    Console.WriteLine("Order status" + o.OrderStatus);
+                    Console.WriteLine("Id: " + o.OrderId);
+                    Console.WriteLine();
+                }
+
             }
         }
 
