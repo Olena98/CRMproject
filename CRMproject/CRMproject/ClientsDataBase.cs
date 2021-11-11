@@ -16,8 +16,7 @@ namespace CRMproject
         public static void Initialize()
         {
             xmlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "clients.xml");           
-            Clients = ReadXmlFile(xmlPath);
-                    
+            Clients = ReadXmlFile(xmlPath);                    
         }
         
         public static void AddClient(Client client)

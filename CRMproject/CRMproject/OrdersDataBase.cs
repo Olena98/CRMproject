@@ -13,9 +13,13 @@ namespace CRMproject
 
         private static string xmlPath;
 
-
-        public static void AddNewOrder(Order order)
+        public static void Initialize() 
         {
+            xmlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "orders.xml");
+            Orders = ReadXmlFile(xmlPath);
+        }
+        public static void AddNewOrder(Order order)
+        {         
             SaveOrder(order);
             Orders.Add(order);
 
@@ -47,19 +51,19 @@ namespace CRMproject
                 Console.WriteLine("An exception was thrown!");
             }
             XmlElement orderElem = xDoc.CreateElement("order");
-
+            XmlAttribute orderDateAttr = xDoc.CreateAttribute("orderdate");
+            orderDateAttr.Value = order.OrderDate.ToString();
             XmlAttribute orderNumberAttr = xDoc.CreateAttribute("orderNumber");
             orderNumberAttr.Value = order.OrderNumber.ToString();
-            XmlAttribute orderStatusAttr = xDoc.CreateAttribute("order status");
+            XmlAttribute orderStatusAttr = xDoc.CreateAttribute("orderstatus");
             orderStatusAttr.Value = order.OrderStatus;
             XmlAttribute guidAttr = xDoc.CreateAttribute("guid");
             guidAttr.Value = order.OrderId.ToString();
-            XmlAttribute orderDateAttr = xDoc.CreateAttribute("order date");
-            orderDateAttr.Value = order.OrderDate.ToString();
+            
 
             orderElem.Attributes.Append(orderDateAttr);
-            orderElem.Attributes.Append(orderStatusAttr);
             orderElem.Attributes.Append(orderNumberAttr);
+            orderElem.Attributes.Append(orderStatusAttr);
             orderElem.Attributes.Append(guidAttr);
 
             rootElement.AppendChild(orderElem);
@@ -88,7 +92,11 @@ namespace CRMproject
                 if (xnode.Attributes.Count > 0)
                 {
                     Order order = new Order();
-
+                    XmlNode attrOrderDate = xnode.Attributes.GetNamedItem("order date");
+                    if (attrOrderDate != null)
+                    {
+                        order.OrderDate = DateTime.Parse(attrOrderDate.Value);
+                    }
                     XmlNode attrOrderNumber = xnode.Attributes.GetNamedItem("order number");
                     if (attrOrderNumber != null)
                     {
@@ -98,12 +106,7 @@ namespace CRMproject
                     if (attrOrderStatus != null)
                     {
                         order.OrderStatus = attrOrderStatus.Value;
-                    }
-                    XmlNode attrOrderDate = xnode.Attributes.GetNamedItem("order date");
-                    if (attrOrderDate != null)
-                    {
-                        order.OrderDate = DateTime.Parse(attrOrderDate.Value);
-                    }
+                    }                   
                     XmlNode attrGuid = xnode.Attributes.GetNamedItem("guid");
                     if (attrGuid != null)
                     {

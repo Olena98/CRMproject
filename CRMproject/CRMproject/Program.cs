@@ -9,6 +9,7 @@ namespace CRMproject
         {
             ClientsDataBase.Initialize();
             ProductsDataBase.Initialize();
+            OrdersDataBase.Initialize();
             UserMenu();
         }
 
@@ -330,67 +331,90 @@ namespace CRMproject
                 }
             }           
         }
+
         static void AddOrder() 
         {
             var addOrder = true;
             while (addOrder) 
             {
                 var orders = new Order();
-                Console.WriteLine("Please, enter order status, for example: new, paid, is making up, sent, completed, canceled: ");
-                orders.OrderStatus = Console.ReadLine();
-
+               
                 Console.WriteLine("You order date: ");
-                orders.OrderDate = DateTime.Today;
+                orders.OrderDate = DateTime.Now;
                 Console.WriteLine(orders.OrderDate);
-
-                Console.WriteLine("Orders guid id: ");
-                orders.OrderId = Guid.NewGuid();
-                Console.WriteLine(orders.OrderId);
 
                 Console.WriteLine("Please, enter order number: ");
                 int number;
                 if (!int.TryParse(Console.ReadLine(), out number))
                 {
-                    orders.OrderNumber = UniqueNumericNumberHelper.GetUniqueProductNumericNumber();
+                    orders.OrderNumber = UniqueNumericNumberHelper.GetUniqueOrderNumericNumber();
                 }
                 else
                 {
                     orders.OrderNumber = number;
                 }
+                Console.WriteLine("Please, enter order status, for example: new, paid, is making up, sent, completed, canceled: ");
+                orders.OrderStatus = Console.ReadLine();
+
+                Console.WriteLine("Orders guid id: ");
+                orders.OrderId = Guid.NewGuid();
+                Console.WriteLine(orders.OrderId);
+
+                OrderService.AddNewOrder(orders);
+
+                Console.WriteLine("Continue entering new orders? (Y - to yes):");
+                addOrder = Console.ReadLine().ToLower() == "y";
+
             }
         }
+
         static void SearchOrder() 
         {
             var searchOrder = true;
             while (searchOrder) 
             {
-                Console.WriteLine("Orders search\n\t1.Search order by date\n\t2.Search order by status\n\t3.Search order by id");
+                Console.WriteLine("Orders search\n\t1.Search order by date\n\t2.Search order by number\n\t3.Search order by status\n\t4.Search order by id");
                 Console.WriteLine("Enter the item number: ");
                 string itemNumber = Console.ReadLine();
                 switch (itemNumber) 
                 {
                     case "1":
-                        Console.WriteLine($"Please, enter name to search for a product");
+                        Console.WriteLine($"Please, enter date to search for a order");
                         DateTime dateOfOrder = DateTime.Parse(Console.ReadLine());
-                        if (String.IsNullOrWhiteSpace(dateOfOrder.ToString()))
-                        {
-                            Console.Write("Incorrect input");
-                        }
-                        else
-                        {
-                            var result = OrderService.GetOrdersByDate(dateOfOrder);
-                            OutputOrderList(result);
-                        }
+                        var result = OrderService.GetOrdersByDate(dateOfOrder);
+                        OutputOrderList(result);
+                        Console.WriteLine("Return to orders search menu? (Y - to yes):");
+                        searchOrder = Console.ReadLine().ToLower() == "y";
                         break;
-
+                    case "2":
+                        Console.WriteLine($"Please, enter date to search for a order");
+                        int number;
+                        bool numberOfOrder = int.TryParse(Console.ReadLine(), out number);
+                        var resultNumber = OrderService.GetOrdersByNumber(number);
+                        OutputOrderList(resultNumber);
+                        Console.WriteLine("Return to orders search menu? (Y - to yes):");
+                        searchOrder = Console.ReadLine().ToLower() == "y";
+                        break;
+                    case "3":
+                        Console.WriteLine($"Please, enter status to search for a order (keywords for example: new, paid, is making up, sent, completed, canceled)");
+                        string statusOfOrder = Console.ReadLine();
+                        var resultStatus = OrderService.GetOrdersByStatus(statusOfOrder);
+                        OutputOrderList(resultStatus);
+                        Console.WriteLine("Return to orders search menu? (Y - to yes):");
+                        searchOrder = Console.ReadLine().ToLower() == "y";
+                        break;
+                    case "4":
+                        Console.WriteLine($"Please, enter id to search for a order");
+                        Guid guidOfOrder = Guid.Parse(Console.ReadLine());
+                        var resultId = OrderService.GetOrdersById(guidOfOrder);
+                        OutputOrderList(resultId);
+                        Console.WriteLine("Return to orders search menu? (Y - to yes):");
+                        searchOrder = Console.ReadLine().ToLower() == "y";
+                        break;
                 }
-
-
-
-            }
-        
-        
+            }     
         }
+
         static void OutputOrderList(List<Order> orders) 
         {
             if(orders.Count == 0) 
