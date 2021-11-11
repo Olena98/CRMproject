@@ -11,6 +11,8 @@ namespace CRMproject
     {
         public static List<Order> Orders { get; private set; }
 
+        
+
         private static string xmlPath;
 
         public static void Initialize() 
@@ -57,6 +59,10 @@ namespace CRMproject
             orderNumberAttr.Value = order.OrderNumber.ToString();
             XmlAttribute orderStatusAttr = xDoc.CreateAttribute("orderstatus");
             orderStatusAttr.Value = order.OrderStatus;
+            XmlAttribute clientIdAttr = xDoc.CreateAttribute("clientsId");
+            clientIdAttr.Value = order.ClientId.ToString();
+            XmlAttribute productIdAttr = xDoc.CreateAttribute("productId");
+            productIdAttr.Value = order.ProductsId.ToString();
             XmlAttribute guidAttr = xDoc.CreateAttribute("guid");
             guidAttr.Value = order.OrderId.ToString();
             
@@ -64,6 +70,8 @@ namespace CRMproject
             orderElem.Attributes.Append(orderDateAttr);
             orderElem.Attributes.Append(orderNumberAttr);
             orderElem.Attributes.Append(orderStatusAttr);
+            orderElem.Attributes.Append(clientIdAttr);
+            orderElem.Attributes.Append(productIdAttr);
             orderElem.Attributes.Append(guidAttr);
 
             rootElement.AppendChild(orderElem);
@@ -106,7 +114,17 @@ namespace CRMproject
                     if (attrOrderStatus != null)
                     {
                         order.OrderStatus = attrOrderStatus.Value;
-                    }                   
+                    }
+                    XmlNode attrClientId = xnode.Attributes.GetNamedItem("clientId");
+                    if (attrClientId != null)
+                    {
+                        order.ClientId = Guid.Parse(attrClientId.Value);
+                    }
+                    XmlNode attrProductId = xnode.Attributes.GetNamedItem("productId");
+                    if (attrProductId != null)
+                    {
+                        order.ProductsId = Guid.Parse(attrProductId.Value);
+                    }
                     XmlNode attrGuid = xnode.Attributes.GetNamedItem("guid");
                     if (attrGuid != null)
                     {

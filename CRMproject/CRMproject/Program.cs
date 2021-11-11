@@ -338,6 +338,8 @@ namespace CRMproject
             while (addOrder) 
             {
                 var orders = new Order();
+                var clients = new Client();
+                var products = new Product();
                
                 Console.WriteLine("You order date: ");
                 orders.OrderDate = DateTime.Now;
@@ -360,6 +362,12 @@ namespace CRMproject
                 orders.OrderId = Guid.NewGuid();
                 Console.WriteLine(orders.OrderId);
 
+                Console.WriteLine("Please, enter client id: ");
+                clients.Id = Guid.Parse(Console.ReadLine());
+
+                Console.WriteLine("Please, enter product id: ");
+                products.Id = Guid.Parse(Console.ReadLine());
+
                 OrderService.AddNewOrder(orders);
 
                 Console.WriteLine("Continue entering new orders? (Y - to yes):");
@@ -373,13 +381,14 @@ namespace CRMproject
             var searchOrder = true;
             while (searchOrder) 
             {
-                Console.WriteLine("Orders search\n\t1.Search order by date\n\t2.Search order by number\n\t3.Search order by status\n\t4.Search order by id");
+                Console.WriteLine("Orders search\n\t1.Search order by date\n\t2.Search order by number\n\t3.Search order by status\n\t4.Search order by client id"+
+                    "\n\t5.Search order by product id\n\t6.Search order by id");
                 Console.WriteLine("Enter the item number: ");
                 string itemNumber = Console.ReadLine();
                 switch (itemNumber) 
                 {
                     case "1":
-                        Console.WriteLine($"Please, enter date to search for a order");
+                        Console.WriteLine($"Please, enter date to search for an order");
                         DateTime dateOfOrder = DateTime.Parse(Console.ReadLine());
                         var result = OrderService.GetOrdersByDate(dateOfOrder);
                         OutputOrderList(result);
@@ -387,7 +396,7 @@ namespace CRMproject
                         searchOrder = Console.ReadLine().ToLower() == "y";
                         break;
                     case "2":
-                        Console.WriteLine($"Please, enter date to search for a order");
+                        Console.WriteLine($"Please, enter date to search for an order");
                         int number;
                         bool numberOfOrder = int.TryParse(Console.ReadLine(), out number);
                         var resultNumber = OrderService.GetOrdersByNumber(number);
@@ -396,7 +405,7 @@ namespace CRMproject
                         searchOrder = Console.ReadLine().ToLower() == "y";
                         break;
                     case "3":
-                        Console.WriteLine($"Please, enter status to search for a order (keywords for example: new, paid, is making up, sent, completed, canceled)");
+                        Console.WriteLine($"Please, enter status to search for an order (keywords for example: new, paid, is making up, sent, completed, canceled)");
                         string statusOfOrder = Console.ReadLine();
                         var resultStatus = OrderService.GetOrdersByStatus(statusOfOrder);
                         OutputOrderList(resultStatus);
@@ -404,7 +413,24 @@ namespace CRMproject
                         searchOrder = Console.ReadLine().ToLower() == "y";
                         break;
                     case "4":
-                        Console.WriteLine($"Please, enter id to search for a order");
+                        Console.WriteLine("Please, enter client id to search for an order: ");
+                        Guid guidOfClientId = Guid.Parse(Console.ReadLine());
+                        var resultClientId = OrderService.GetOrdersByClientId(guidOfClientId);
+                        OutputUsersList(resultClientId);
+                        Console.WriteLine("Return to orders search menu? (Y - to yes):");
+                        searchOrder = Console.ReadLine().ToLower() == "y";
+                        break;
+                    case "5":
+                        Console.WriteLine("Please, enter product id to search for an order: ");
+                        Guid guidOfProductId = Guid.Parse(Console.ReadLine());
+                        var resultProductId = OrderService.GetOrdersByProductId(guidOfProductId);
+                        OutputProductList(resultProductId);
+                        Console.WriteLine("Return to orders search menu? (Y - to yes):");
+                        searchOrder = Console.ReadLine().ToLower() == "y";
+                        break;
+
+                    case "6":
+                        Console.WriteLine($"Please, enter id to search for an order");
                         Guid guidOfOrder = Guid.Parse(Console.ReadLine());
                         var resultId = OrderService.GetOrdersById(guidOfOrder);
                         OutputOrderList(resultId);

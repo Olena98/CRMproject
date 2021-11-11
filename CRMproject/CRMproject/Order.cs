@@ -10,6 +10,8 @@ namespace CRMproject
         public int OrderNumber { get; set; }
         public DateTime  OrderDate  { get; set; }
         public string OrderStatus { get; set; }
+        public Guid ClientId { get; set; }
+        public Guid ProductsId { get; set; }
         
     }
 }
