@@ -53,12 +53,14 @@ namespace CRMproject
                 Console.WriteLine("An exception was thrown!");
             }
             XmlElement orderElem = xDoc.CreateElement("order");
-            XmlAttribute orderDateAttr = xDoc.CreateAttribute("orderdate");
+            XmlAttribute orderDateAttr = xDoc.CreateAttribute("orderDate");
             orderDateAttr.Value = order.OrderDate.ToString();
             XmlAttribute orderNumberAttr = xDoc.CreateAttribute("orderNumber");
             orderNumberAttr.Value = order.OrderNumber.ToString();
-            XmlAttribute orderStatusAttr = xDoc.CreateAttribute("orderstatus");
+            XmlAttribute orderStatusAttr = xDoc.CreateAttribute("orderStatus");
             orderStatusAttr.Value = order.OrderStatus;
+            XmlAttribute orderClientPhoneAttr = xDoc.CreateAttribute("clientPhone");
+            orderClientPhoneAttr.Value = order.ClientPhone;
             XmlAttribute clientIdAttr = xDoc.CreateAttribute("clientsId");
             clientIdAttr.Value = order.ClientId.ToString();
             XmlAttribute productIdAttr = xDoc.CreateAttribute("productId");
@@ -70,6 +72,7 @@ namespace CRMproject
             orderElem.Attributes.Append(orderDateAttr);
             orderElem.Attributes.Append(orderNumberAttr);
             orderElem.Attributes.Append(orderStatusAttr);
+            orderElem.Attributes.Append(orderClientPhoneAttr);
             orderElem.Attributes.Append(clientIdAttr);
             orderElem.Attributes.Append(productIdAttr);
             orderElem.Attributes.Append(guidAttr);
@@ -100,20 +103,25 @@ namespace CRMproject
                 if (xnode.Attributes.Count > 0)
                 {
                     Order order = new Order();
-                    XmlNode attrOrderDate = xnode.Attributes.GetNamedItem("order date");
+                    XmlNode attrOrderDate = xnode.Attributes.GetNamedItem("orderDate");
                     if (attrOrderDate != null)
                     {
                         order.OrderDate = DateTime.Parse(attrOrderDate.Value);
                     }
-                    XmlNode attrOrderNumber = xnode.Attributes.GetNamedItem("order number");
+                    XmlNode attrOrderNumber = xnode.Attributes.GetNamedItem("orderNumber");
                     if (attrOrderNumber != null)
                     {
                         order.OrderNumber = Convert.ToInt32(attrOrderNumber.Value);
                     }
-                    XmlNode attrOrderStatus = xnode.Attributes.GetNamedItem("order status");
+                    XmlNode attrOrderStatus = xnode.Attributes.GetNamedItem("orderStatus");
                     if (attrOrderStatus != null)
                     {
                         order.OrderStatus = attrOrderStatus.Value;
+                    }
+                    XmlNode attrOrderClientPhone = xnode.Attributes.GetNamedItem("clientPhone");
+                    if (attrOrderClientPhone != null)
+                    {
+                        order.ClientPhone = attrOrderClientPhone.Value;
                     }
                     XmlNode attrClientId = xnode.Attributes.GetNamedItem("clientId");
                     if (attrClientId != null)

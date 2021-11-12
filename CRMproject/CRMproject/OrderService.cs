@@ -23,14 +23,18 @@ namespace CRMproject
         {
             status = status.ToUpper();
             return OrdersDataBase.Orders.Where(o => o.OrderStatus.ToUpper().Contains(status)).ToList(); 
-        }
-        public static List<Client>GetOrdersByClientId(Guid clientId) 
+        }       
+        public static List<Order> GetOrdersByPhone(string phone) 
         {
-            return ClientsDataBase.Clients.Where(c => c.Id == clientId).ToList();
-        }
-        public static List<Product> GetOrdersByProductId(Guid productId) 
+            return OrdersDataBase.Orders.Where(o => o.ClientPhone.Contains(phone)).ToList();
+        }      
+        public static List <Order> GetOrdersByClientGuid(Guid clientId) 
         {
-            return ProductsDataBase.Products.Where(p => p.Id == productId).ToList();
+            return OrdersDataBase.Orders.Where(o => o.ClientId == clientId).ToList();
+        }       
+        public static List<Order> GetOrdersByProductsGuid(Guid productId) 
+        {
+            return OrdersDataBase.Orders.Where(o => o.ProductsId == productId).ToList();
         }
         public static List<Order> GetOrdersById(Guid guid) 
         {

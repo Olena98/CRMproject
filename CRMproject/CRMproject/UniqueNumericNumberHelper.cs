@@ -22,7 +22,7 @@ namespace CRMproject
         {
             var random = new Random();
             int randomNumber = random.Next(0, 20000000);
-            if (ProductService.GetProductsByNumber(randomNumber).Count == 0)
+            if (OrderService.GetOrdersByNumber(randomNumber).Count == 0)
             {
                 Console.WriteLine("Your new orders number: " + randomNumber);
             }
