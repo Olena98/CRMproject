@@ -109,7 +109,7 @@ namespace CRMproject
             while (searchofclient)
             {
                 Console.WriteLine("Clients search menu\n\t1.Search client by name\n\t2.Search client by email\n\t3.Search client by phone number" +
-                     "\n\t4.Search client by id");
+                     "\n\t4.Search client by id\n\t5.Exit");
                 Console.WriteLine("Enter the item number: ");
                 string itemNumber = Console.ReadLine();
                 switch (itemNumber)
@@ -164,6 +164,10 @@ namespace CRMproject
                         Guid guidOfClient = Guid.Parse(Console.ReadLine());
                         var resultId = ClientsService.GetClientsById(guidOfClient);
                         OutputUsersList(resultId);
+                        Console.WriteLine("Return to clients search menu? (Y - to yes):");
+                        searchofclient = Console.ReadLine().ToLower() == "y";
+                        break;
+                    case "5":
                         Console.WriteLine("Return to clients search menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
                         break;
@@ -258,7 +262,7 @@ namespace CRMproject
             while (searchproduct) 
             {
                 Console.WriteLine("Products search\n\t1.Search product by name\n\t2.Search product by description\n\t3.Search product by price" +
-                        "\n\t4.Search product by number\n\t5.Search product by existence\n\t6.Search product by id");
+                        "\n\t4.Search product by number\n\t5.Search product by existence\n\t6.Search product by id\n\t7.Exit");
                 Console.WriteLine("Enter the item number: ");
                 string itemNumber = Console.ReadLine();
                 switch (itemNumber)
@@ -328,6 +332,10 @@ namespace CRMproject
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
+                    case "7":
+                        Console.WriteLine("Return to products search menu? (Y - to yes):");
+                        searchproduct = Console.ReadLine().ToLower() == "y";
+                        break;
                 }
             }           
         }
@@ -338,6 +346,7 @@ namespace CRMproject
             while (addOrder) 
             {
                 var orders = new Order();
+                var changeOrder = true;
                               
                 Console.WriteLine("You order date: ");
                 orders.OrderDate = DateTime.Now;
@@ -369,11 +378,16 @@ namespace CRMproject
                 Console.WriteLine("Please, enter product id: ");
                 orders.ProductsId = Guid.Parse(Console.ReadLine());
 
+                Console.WriteLine("Maybe you want entering changes in orders?(Y - to yes):");
+                changeOrder = Console.ReadLine().ToLower() == "y";
+                AddChangesInOrder(orders);
+
                 OrderService.AddNewOrder(orders);
 
                 Console.WriteLine("Continue entering new orders? (Y - to yes):");
                 addOrder = Console.ReadLine().ToLower() == "y";
 
+               
             }
         }
 
@@ -478,6 +492,14 @@ namespace CRMproject
                 }
 
             }
+        }
+        static void AddChangesInOrder(Order orders) 
+        {
+            var order = new Order();
+            Console.WriteLine("Please, enter changes of status an order:");
+            order.OrderChangeOfStatus = Console.ReadLine();
+            
+
         }
 
         static void OutputProductList(List<Product> products)

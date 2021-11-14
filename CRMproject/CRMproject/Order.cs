@@ -13,6 +13,11 @@ namespace CRMproject
         public string ClientPhone { get; set; }
         public Guid ClientId { get; set; }
         public Guid ProductsId { get; set; }
+        public string OrderChangeOfStatus { get; set; }
+        public DateTime OrderChangeOfDate { get; set; }
+
+      
+        
         
     }
 }

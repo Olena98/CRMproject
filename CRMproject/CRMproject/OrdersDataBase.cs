@@ -55,10 +55,15 @@ namespace CRMproject
             XmlElement orderElem = xDoc.CreateElement("order");
             XmlAttribute orderDateAttr = xDoc.CreateAttribute("orderDate");
             orderDateAttr.Value = order.OrderDate.ToString();
-            XmlAttribute orderNumberAttr = xDoc.CreateAttribute("orderNumber");
-            orderNumberAttr.Value = order.OrderNumber.ToString();
+            XmlElement ordersElem = xDoc.CreateElement("story");
+            XmlAttribute ordersChangeOfDateAttr = xDoc.CreateAttribute("date");
+            ordersChangeOfDateAttr.Value = order.OrderChangeOfDate.ToString();          
             XmlAttribute orderStatusAttr = xDoc.CreateAttribute("orderStatus");
             orderStatusAttr.Value = order.OrderStatus;
+            XmlAttribute ordersChangeOfStatusAttr = xDoc.CreateAttribute("status");
+            ordersChangeOfStatusAttr.Value = order.OrderChangeOfStatus;
+            XmlAttribute orderNumberAttr = xDoc.CreateAttribute("orderNumber");
+            orderNumberAttr.Value = order.OrderNumber.ToString();
             XmlAttribute orderClientPhoneAttr = xDoc.CreateAttribute("clientPhone");
             orderClientPhoneAttr.Value = order.ClientPhone;
             XmlAttribute clientIdAttr = xDoc.CreateAttribute("clientsId");
@@ -67,11 +72,12 @@ namespace CRMproject
             productIdAttr.Value = order.ProductsId.ToString();
             XmlAttribute guidAttr = xDoc.CreateAttribute("guid");
             guidAttr.Value = order.OrderId.ToString();
-            
 
             orderElem.Attributes.Append(orderDateAttr);
+            ordersElem.Attributes.Append(ordersChangeOfDateAttr);
             orderElem.Attributes.Append(orderNumberAttr);
             orderElem.Attributes.Append(orderStatusAttr);
+            ordersElem.Attributes.Append(ordersChangeOfStatusAttr);
             orderElem.Attributes.Append(orderClientPhoneAttr);
             orderElem.Attributes.Append(clientIdAttr);
             orderElem.Attributes.Append(productIdAttr);
@@ -97,6 +103,7 @@ namespace CRMproject
                 doc.CreateElement("orders");
             }
             var xRoot = doc.DocumentElement;
+          
             foreach (XmlNode xnode in xRoot)
             {
 
@@ -117,6 +124,7 @@ namespace CRMproject
                     if (attrOrderStatus != null)
                     {
                         order.OrderStatus = attrOrderStatus.Value;
+
                     }
                     XmlNode attrOrderClientPhone = xnode.Attributes.GetNamedItem("clientPhone");
                     if (attrOrderClientPhone != null)
@@ -138,10 +146,27 @@ namespace CRMproject
                     {
                         order.OrderId = Guid.Parse(attrGuid.Value);
                     }
+                    foreach (XmlNode childnode in xnode.ChildNodes)
+                    {
+                        doc.CreateElement("story");
+                        if (childnode.Attributes.Count > 0)
+                        {
+                            Order orderChange = new Order();
+                            XmlNode attrChangesOfstatus = childnode.Attributes.GetNamedItem("status");
+                            if (attrChangesOfstatus != null)
+                            {
+                                order.OrderChangeOfStatus = attrChangesOfstatus.Value;
+                            }
+
+                            orders.Add(order);
+                        }
+                    }
                     orders.Add(order);
                 }
+
             }
-            return orders;
+            
+                return orders;
         }
     }
 }

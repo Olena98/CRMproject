@@ -11,6 +11,7 @@ namespace CRMproject
             while(ProductService.GetProductsByNumber(randomNumber).Count > 0)
             {
                 randomNumber = random.Next(0, 20000000);
+                Console.WriteLine("Your new number:" + randomNumber);
             }
             return randomNumber;
         }
@@ -22,6 +23,7 @@ namespace CRMproject
             while (OrderService.GetOrdersByNumber(randomNumber).Count > 0)
             {
                 randomNumber = random.Next(0, 20000000);
+                Console.WriteLine("Your new number: " + randomNumber);
             }
             return randomNumber;
         }
