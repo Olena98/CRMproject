@@ -34,7 +34,7 @@ namespace CRMproject
         }       
         public static List<Order> GetOrdersByPhone(string phone) 
         {
-            return OrdersDataBase.Orders.Where(o => o.ClientPhone.Contains(phone)).ToList();
+            return OrdersDataBase.Orders.Where(o => !string.IsNullOrEmpty(o.ClientPhone) && o.ClientPhone.Contains(phone)).ToList();
         }      
         public static List <Order> GetOrdersByClientGuid(Guid clientId) 
         {

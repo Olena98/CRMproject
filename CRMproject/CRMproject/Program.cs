@@ -383,7 +383,7 @@ namespace CRMproject
             while (searchOrder) 
             {
                 Console.WriteLine("Orders search\n\t1.Search order by date\n\t2.Search order by number\n\t3.Search order by status\n\t4.Search order by clients phone number\n\t5.Search order by client id"+
-                    "\n\t6.Search order by product id\n\t7.Search order by id");
+                    "\n\t6.Search order by product id\n\t7.Search order by id\n\t8.Exit");
                 Console.WriteLine("Enter the item number: ");
                 string itemNumber = Console.ReadLine();
                 switch (itemNumber) 
@@ -446,6 +446,11 @@ namespace CRMproject
                         Console.WriteLine("Return to orders search menu? (Y - to yes):");
                         searchOrder = Console.ReadLine().ToLower() == "y";
                         break;
+                    case "8":
+                        Console.WriteLine("Return to orders search menu? (Y - to yes):");
+                        searchOrder = Console.ReadLine().ToLower() == "y";
+                        break;
+
                 }
             }     
         }
