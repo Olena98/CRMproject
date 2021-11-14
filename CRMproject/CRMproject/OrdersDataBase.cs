@@ -123,7 +123,7 @@ namespace CRMproject
                     {
                         order.ClientPhone = attrOrderClientPhone.Value;
                     }
-                    XmlNode attrClientId = xnode.Attributes.GetNamedItem("clientId");
+                    XmlNode attrClientId = xnode.Attributes.GetNamedItem("clientsId");
                     if (attrClientId != null)
                     {
                         order.ClientId = Guid.Parse(attrClientId.Value);

@@ -13,8 +13,16 @@ namespace CRMproject
         }
         public static List<Order> GetOrdersByDate(DateTime date) 
         {
-            return OrdersDataBase.Orders.Where(o => o.OrderDate == date).ToList();
+            var fullMatch = OrdersDataBase.Orders.Where(o => o.OrderDate == date).ToList();
+            if(fullMatch.Count > 0)
+            {
+                return fullMatch;
+            }
+
+            var onlyDateMatch = OrdersDataBase.Orders.Where(o => o.OrderDate.Date == date.Date).ToList();
+            return onlyDateMatch;
         }
+
         public static List<Order> GetOrdersByNumber(int number) 
         {
             return OrdersDataBase.Orders.Where(o => o.OrderNumber.ToString().ToUpper().Contains(number.ToString())).ToList(); 
@@ -22,7 +30,7 @@ namespace CRMproject
         public static List<Order> GetOrdersByStatus(string status) 
         {
             status = status.ToUpper();
-            return OrdersDataBase.Orders.Where(o => o.OrderStatus.ToUpper().Contains(status)).ToList(); 
+            return OrdersDataBase.Orders.Where(o => !string.IsNullOrEmpty(o.OrderStatus) && o.OrderStatus.ToUpper().Contains(status)).ToList(); 
         }       
         public static List<Order> GetOrdersByPhone(string phone) 
         {

@@ -85,9 +85,8 @@ namespace CRMproject
             var doc = new XmlDocument();           
             if (!File.Exists(xmlPath))
             {
-                File.Create(xmlPath);
                 doc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
-                doc.CreateElement("clients");                       
+                doc.Save(xmlPath);                     
             }
             else
             {

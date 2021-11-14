@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CRMproject
 {
@@ -10,23 +7,22 @@ namespace CRMproject
         public static int GetUniqueProductNumericNumber()
         {
             var random = new Random();
-            int randomNumber = random.Next(0, 20000000);
-            if (ProductService.GetProductsByNumber(randomNumber).Count == 0)
+            int randomNumber = random.Next(0, 20000000); 
+            while(ProductService.GetProductsByNumber(randomNumber).Count > 0)
             {
-                Console.WriteLine("Your new products number: " + randomNumber);
+                randomNumber = random.Next(0, 20000000);
             }
-
             return randomNumber;
         }
+
         public static int GetUniqueOrderNumericNumber() 
         {
             var random = new Random();
-            int randomNumber = random.Next(0, 20000000);
-            if (OrderService.GetOrdersByNumber(randomNumber).Count == 0)
+            int randomNumber = random.Next(0, 20000000); 
+            while (OrderService.GetOrdersByNumber(randomNumber).Count > 0)
             {
-                Console.WriteLine("Your new orders number: " + randomNumber);
+                randomNumber = random.Next(0, 20000000);
             }
-
             return randomNumber;
         }
     }
