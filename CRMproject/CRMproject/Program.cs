@@ -380,7 +380,10 @@ namespace CRMproject
 
                 Console.WriteLine("Maybe you want entering changes in orders?(Y - to yes):");
                 changeOrder = Console.ReadLine().ToLower() == "y";
-                AddChangesInOrder(orders);
+                Console.WriteLine("Please, enter changes of status an order:");
+                orders.OrderChangeOfStatus = Console.ReadLine();
+                Console.WriteLine("Please, enter changes of date an order: ");
+                orders.OrderChangeOfDate = DateTime.Parse(Console.ReadLine());
 
                 OrderService.AddNewOrder(orders);
 
@@ -493,14 +496,7 @@ namespace CRMproject
 
             }
         }
-        static void AddChangesInOrder(Order orders) 
-        {
-            var order = new Order();
-            Console.WriteLine("Please, enter changes of status an order:");
-            order.OrderChangeOfStatus = Console.ReadLine();
-            
 
-        }
 
         static void OutputProductList(List<Product> products)
         {

@@ -43,25 +43,22 @@ namespace CRMproject
                 {
                     File.Create(xmlPath);
                     rootElement = xDoc.CreateNode(XmlNodeType.Element, "orders", string.Empty);
+                    rootElement = xDoc.CreateNode(XmlNodeType.Element, "story", string.Empty);
                     xDoc.AppendChild(rootElement);
                 }
             }
             catch
             {
                 rootElement = xDoc.CreateNode(XmlNodeType.Element, "orders", string.Empty);
+                rootElement = xDoc.CreateNode(XmlNodeType.Element, "story", string.Empty);
                 xDoc.AppendChild(rootElement);
                 Console.WriteLine("An exception was thrown!");
             }
             XmlElement orderElem = xDoc.CreateElement("order");
             XmlAttribute orderDateAttr = xDoc.CreateAttribute("orderDate");
-            orderDateAttr.Value = order.OrderDate.ToString();
-            XmlElement ordersElem = xDoc.CreateElement("story");
-            XmlAttribute ordersChangeOfDateAttr = xDoc.CreateAttribute("date");
-            ordersChangeOfDateAttr.Value = order.OrderChangeOfDate.ToString();          
+            orderDateAttr.Value = order.OrderDate.ToString();                          
             XmlAttribute orderStatusAttr = xDoc.CreateAttribute("orderStatus");
-            orderStatusAttr.Value = order.OrderStatus;
-            XmlAttribute ordersChangeOfStatusAttr = xDoc.CreateAttribute("status");
-            ordersChangeOfStatusAttr.Value = order.OrderChangeOfStatus;
+            orderStatusAttr.Value = order.OrderStatus;           
             XmlAttribute orderNumberAttr = xDoc.CreateAttribute("orderNumber");
             orderNumberAttr.Value = order.OrderNumber.ToString();
             XmlAttribute orderClientPhoneAttr = xDoc.CreateAttribute("clientPhone");
@@ -72,18 +69,24 @@ namespace CRMproject
             productIdAttr.Value = order.ProductsId.ToString();
             XmlAttribute guidAttr = xDoc.CreateAttribute("guid");
             guidAttr.Value = order.OrderId.ToString();
+            XmlElement ordersElem = xDoc.CreateElement("story");
+            XmlAttribute ordersChangeOfDateAttr = xDoc.CreateAttribute("date");
+            ordersChangeOfDateAttr.Value = order.OrderChangeOfDate.ToString();
+            XmlAttribute ordersChangeOfStatusAttr = xDoc.CreateAttribute("status");
+            ordersChangeOfStatusAttr.Value = order.OrderChangeOfStatus;
 
             orderElem.Attributes.Append(orderDateAttr);
-            ordersElem.Attributes.Append(ordersChangeOfDateAttr);
             orderElem.Attributes.Append(orderNumberAttr);
             orderElem.Attributes.Append(orderStatusAttr);
-            ordersElem.Attributes.Append(ordersChangeOfStatusAttr);
             orderElem.Attributes.Append(orderClientPhoneAttr);
             orderElem.Attributes.Append(clientIdAttr);
             orderElem.Attributes.Append(productIdAttr);
             orderElem.Attributes.Append(guidAttr);
+            ordersElem.Attributes.Append(ordersChangeOfDateAttr);
+            ordersElem.Attributes.Append(ordersChangeOfStatusAttr);
 
-            rootElement.AppendChild(orderElem);
+            rootElement.AppendChild(orderElem);         
+            rootElement.AppendChild(ordersElem);
             xDoc.Save(xmlPath);
 
         }
@@ -146,27 +149,23 @@ namespace CRMproject
                     {
                         order.OrderId = Guid.Parse(attrGuid.Value);
                     }
-                    foreach (XmlNode childnode in xnode.ChildNodes)
+                    XmlNode attrChangesOfStatus = xnode.Attributes.GetNamedItem("status");
+                    if (attrChangesOfStatus != null)
                     {
-                        doc.CreateElement("story");
-                        if (childnode.Attributes.Count > 0)
-                        {
-                            Order orderChange = new Order();
-                            XmlNode attrChangesOfstatus = childnode.Attributes.GetNamedItem("status");
-                            if (attrChangesOfstatus != null)
-                            {
-                                order.OrderChangeOfStatus = attrChangesOfstatus.Value;
-                            }
-
-                            orders.Add(order);
-                        }
+                        order.OrderChangeOfStatus = attrChangesOfStatus.Value;
                     }
+                    XmlNode attrChangesOfDate = xnode.Attributes.GetNamedItem("date");
+                    if(attrChangesOfDate != null) 
+                    {
+                        order.OrderChangeOfDate = DateTime.Parse(attrChangesOfDate.Value);
+                    }
+                    
                     orders.Add(order);
                 }
 
             }
             
-                return orders;
+            return orders;
         }
     }
 }
