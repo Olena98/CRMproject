@@ -24,6 +24,7 @@ namespace CRMproject
         {         
             SaveOrder(order);
             Orders.Add(order);
+            
 
         }
         public static void SaveOrder(Order order)
@@ -69,11 +70,6 @@ namespace CRMproject
             productIdAttr.Value = order.ProductsId.ToString();
             XmlAttribute guidAttr = xDoc.CreateAttribute("guid");
             guidAttr.Value = order.OrderId.ToString();
-            XmlElement ordersElem = xDoc.CreateElement("story");
-            XmlAttribute ordersChangeOfDateAttr = xDoc.CreateAttribute("date");
-            ordersChangeOfDateAttr.Value = order.OrderChangeOfDate.ToString();
-            XmlAttribute ordersChangeOfStatusAttr = xDoc.CreateAttribute("status");
-            ordersChangeOfStatusAttr.Value = order.OrderChangeOfStatus;
 
             orderElem.Attributes.Append(orderDateAttr);
             orderElem.Attributes.Append(orderNumberAttr);
@@ -82,14 +78,13 @@ namespace CRMproject
             orderElem.Attributes.Append(clientIdAttr);
             orderElem.Attributes.Append(productIdAttr);
             orderElem.Attributes.Append(guidAttr);
-            ordersElem.Attributes.Append(ordersChangeOfDateAttr);
-            ordersElem.Attributes.Append(ordersChangeOfStatusAttr);
 
-            rootElement.AppendChild(orderElem);         
-            rootElement.AppendChild(ordersElem);
+            rootElement.AppendChild(orderElem);
+            
             xDoc.Save(xmlPath);
 
         }
+       
         public static List<Order> ReadXmlFile(string xmlPath)
         {
 
@@ -149,16 +144,8 @@ namespace CRMproject
                     {
                         order.OrderId = Guid.Parse(attrGuid.Value);
                     }
-                    XmlNode attrChangesOfStatus = xnode.Attributes.GetNamedItem("status");
-                    if (attrChangesOfStatus != null)
-                    {
-                        order.OrderChangeOfStatus = attrChangesOfStatus.Value;
-                    }
-                    XmlNode attrChangesOfDate = xnode.Attributes.GetNamedItem("date");
-                    if(attrChangesOfDate != null) 
-                    {
-                        order.OrderChangeOfDate = DateTime.Parse(attrChangesOfDate.Value);
-                    }
+                    
+                    
                     
                     orders.Add(order);
                 }

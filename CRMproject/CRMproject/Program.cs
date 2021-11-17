@@ -19,7 +19,7 @@ namespace CRMproject
             while (returnUserMenu)
             {
                 Console.WriteLine("Main menu\n\t1.Add new client\n\t2.Search client\n\t3.Edit client");
-                Console.WriteLine("\t4.Add product\n\t5.Search product\n\t6.Add order\n\t7.Search order\n\t8.Clear all");
+                Console.WriteLine("\t4.Add product\n\t5.Search product\n\t6.Add order\n\t7.Search order\n\t8.Change order\n\t9.Clear all");
                 Console.WriteLine("Enter the item number");
                 string selection = Console.ReadLine();
                 switch (selection)
@@ -67,6 +67,12 @@ namespace CRMproject
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
                     case "8":
+                        Console.WriteLine("You have chosen by search order");
+                        ChangeOrder();
+                        Console.WriteLine("Return to main menu? (Y - to yes):");
+                        returnUserMenu = Console.ReadLine().ToLower() == "y";
+                        break;
+                    case "9":
                         Console.WriteLine("You have chosen by search product");
                         Console.Clear();
                         Console.WriteLine("Return to main menu? (Y - to yes):");
@@ -346,7 +352,7 @@ namespace CRMproject
             while (addOrder) 
             {
                 var orders = new Order();
-                var changeOrder = true;
+               
                               
                 Console.WriteLine("You order date: ");
                 orders.OrderDate = DateTime.Now;
@@ -378,12 +384,6 @@ namespace CRMproject
                 Console.WriteLine("Please, enter product id: ");
                 orders.ProductsId = Guid.Parse(Console.ReadLine());
 
-                Console.WriteLine("Maybe you want entering changes in orders?(Y - to yes):");
-                changeOrder = Console.ReadLine().ToLower() == "y";
-                Console.WriteLine("Please, enter changes of status an order:");
-                orders.OrderChangeOfStatus = Console.ReadLine();
-                Console.WriteLine("Please, enter changes of date an order: ");
-                orders.OrderChangeOfDate = DateTime.Parse(Console.ReadLine());
 
                 OrderService.AddNewOrder(orders);
 
@@ -520,6 +520,61 @@ namespace CRMproject
                 }
             }
         }
+        static void ChangeOrder() 
+        {
+            Order.ChangeEntry changeEntry = new Order.ChangeEntry();
+            var changeOrder = true;
+            while (changeOrder) 
+            {
+                Console.WriteLine("Change order menu\n\t1. Find order for changes\n\t2. Set orders status and set orders date\n\t4. Exit");
+                Console.WriteLine("Enter the item number: ");
+                string itemNumber = Console.ReadLine();
+                switch (itemNumber) 
+                {
+                    case "1":
+                        OutputChangeOrderList(OrdersDataBase.Orders);
+                        Console.WriteLine("Please, select orders number");
+                        int index;
+                        bool indexOfNumber = int.TryParse(Console.ReadLine(), out index);
+                        Console.WriteLine("You entered: " + index);              
+                        break;
+                    case "2":                       
+                        Console.WriteLine("Please, set new order status: ");
+                        changeEntry.Status = Console.ReadLine();
+                      
+                        Console.WriteLine("Please, set new order date");
+                        changeEntry.Date = DateTime.Parse(Console.ReadLine());
+                        
+                        break;
+                    case "3":
+                        Console.WriteLine("Return to orders change menu? (Y - to yes):");
+                        changeOrder = Console.ReadLine().ToLower() == "y";
+                        break;
+                       
+                }
+            }
+        }
+        static void OutputChangeOrderList(List<Order> orders)
+        {
+            Console.WriteLine("Count of orders: " + orders.Count);
+            for (int i = 1; i < orders.Count; i++) 
+            {
+                 Console.WriteLine("№: " + i);
+                 Console.WriteLine("Order date: " + orders[i].OrderDate);
+                 Console.WriteLine("Order number: " + orders[i].OrderNumber);
+                 Console.WriteLine("Order status: " + orders[i].OrderStatus);
+                 Console.WriteLine("Client phone: " + orders[i].ClientPhone);
+                 Console.WriteLine("Client id: " + orders[i].ClientId);
+                 Console.WriteLine("Product id: " + orders[i].ProductsId);
+                 Console.WriteLine("Id: " + orders[i].OrderId);
+                 Console.WriteLine();
+
+            }
+           
+
+
+        }
+        
     }
 }
 

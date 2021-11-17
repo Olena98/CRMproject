@@ -11,6 +11,10 @@ namespace CRMproject
         {
             OrdersDataBase.AddNewOrder(orders);
         }
+        public static void AddChangedOrder(Order.ChangeEntry changeEntry) 
+        {
+            OrdersDataBase.AddNewOrder(changeEntry);
+        }
         public static List<Order> GetOrdersByDate(DateTime date) 
         {
             var fullMatch = OrdersDataBase.Orders.Where(o => o.OrderDate == date).ToList();
