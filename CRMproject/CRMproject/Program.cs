@@ -369,7 +369,7 @@ namespace CRMproject
                     orders.OrderNumber = number;
                 }
                 Console.WriteLine("Please, enter order status, for example: new, paid, is making up, sent, completed, canceled: ");
-                orders.OrderStatus = Console.ReadLine();
+                Order.OrderStatus.New.ToString(Console.ReadLine());
 
                 Console.WriteLine("Please, enter client phone number: ");               
                 orders.ClientPhone = Console.ReadLine();
@@ -424,8 +424,8 @@ namespace CRMproject
                         break;
                     case "3":
                         Console.WriteLine($"Please, enter status to search for an order (keywords for example: new, paid, is making up, sent, completed, canceled)");
-                        string statusOfOrder = Console.ReadLine();
-                        var resultStatus = OrderService.GetOrdersByStatus(statusOfOrder);
+                        string orderStatus = Console.ReadLine();
+                        var resultStatus = OrderService.GetOrdersByStatus(orderStatus);
                         OutputOrderList(resultStatus);
                         Console.WriteLine("Return to orders search menu? (Y - to yes):");
                         searchOrder = Console.ReadLine().ToLower() == "y";
@@ -486,7 +486,7 @@ namespace CRMproject
                 {
                     Console.WriteLine("Order date: " + o.OrderDate);                   
                     Console.WriteLine("Order number: " + o.OrderNumber);
-                    Console.WriteLine("Order status: " + o.OrderStatus);
+                    Console.WriteLine("Order status: " + Order.OrderStatus.New);
                     Console.WriteLine("Client phone: " + o.ClientPhone);
                     Console.WriteLine("Client id: " + o.ClientId);
                     Console.WriteLine("Product id: " + o.ProductsId);
@@ -542,9 +542,8 @@ namespace CRMproject
                         Console.WriteLine("Please, set new order status: ");
                         changeEntry.Status = Console.ReadLine();
                       
-                        Console.WriteLine("Please, set new order date");
-                        changeEntry.Date = DateTime.Parse(Console.ReadLine());
-                        
+                       
+                       
                         break;
                     case "3":
                         Console.WriteLine("Return to orders change menu? (Y - to yes):");
@@ -562,7 +561,7 @@ namespace CRMproject
                  Console.WriteLine("№: " + i);
                  Console.WriteLine("Order date: " + orders[i].OrderDate);
                  Console.WriteLine("Order number: " + orders[i].OrderNumber);
-                 Console.WriteLine("Order status: " + orders[i].OrderStatus);
+                 Console.WriteLine("Order status: " + Order.OrderStatus.New);
                  Console.WriteLine("Client phone: " + orders[i].ClientPhone);
                  Console.WriteLine("Client id: " + orders[i].ClientId);
                  Console.WriteLine("Product id: " + orders[i].ProductsId);

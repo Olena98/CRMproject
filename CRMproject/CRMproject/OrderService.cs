@@ -11,10 +11,7 @@ namespace CRMproject
         {
             OrdersDataBase.AddNewOrder(orders);
         }
-        public static void AddChangedOrder(Order.ChangeEntry changeEntry) 
-        {
-            OrdersDataBase.AddNewOrder(changeEntry);
-        }
+       
         public static List<Order> GetOrdersByDate(DateTime date) 
         {
             var fullMatch = OrdersDataBase.Orders.Where(o => o.OrderDate == date).ToList();
@@ -33,8 +30,8 @@ namespace CRMproject
         }
         public static List<Order> GetOrdersByStatus(string status) 
         {
-            status = status.ToUpper();
-            return OrdersDataBase.Orders.Where(o => !string.IsNullOrEmpty(o.OrderStatus) && o.OrderStatus.ToUpper().Contains(status)).ToList(); 
+            
+            return OrdersDataBase.Orders.Where(o => !string.IsNullOrEmpty(Order.OrderStatus.New.ToString()) && Order.OrderStatus.New.ToString().ToUpper().Contains(status.ToString())).ToList(); 
         }       
         public static List<Order> GetOrdersByPhone(string phone) 
         {

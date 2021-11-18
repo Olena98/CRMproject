@@ -9,7 +9,11 @@ namespace CRMproject
         public Guid OrderId { get; set; }
         public int OrderNumber { get; set; }
         public DateTime OrderDate { get; set; }     
-        public string OrderStatus { get; set; }
+        public enum OrderStatus 
+        { 
+         
+            New, IsMakingUp, Sent, Paid, Canceled
+        }
         public string ClientPhone { get; set; }
         public Guid ClientId { get; set; }
         public Guid ProductsId { get; set; }

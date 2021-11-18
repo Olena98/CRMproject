@@ -59,7 +59,7 @@ namespace CRMproject
             XmlAttribute orderDateAttr = xDoc.CreateAttribute("orderDate");
             orderDateAttr.Value = order.OrderDate.ToString();                          
             XmlAttribute orderStatusAttr = xDoc.CreateAttribute("orderStatus");
-            orderStatusAttr.Value = order.OrderStatus;           
+            orderStatusAttr.Value = Order.OrderStatus.New.ToString().ToLower();           
             XmlAttribute orderNumberAttr = xDoc.CreateAttribute("orderNumber");
             orderNumberAttr.Value = order.OrderNumber.ToString();
             XmlAttribute orderClientPhoneAttr = xDoc.CreateAttribute("clientPhone");
@@ -87,7 +87,7 @@ namespace CRMproject
        
         public static List<Order> ReadXmlFile(string xmlPath)
         {
-
+            
             List<Order> orders = new List<Order>();
             var doc = new XmlDocument();
 
@@ -108,6 +108,7 @@ namespace CRMproject
                 if (xnode.Attributes.Count > 0)
                 {
                     Order order = new Order();
+                   
                     XmlNode attrOrderDate = xnode.Attributes.GetNamedItem("orderDate");
                     if (attrOrderDate != null)
                     {
@@ -121,7 +122,7 @@ namespace CRMproject
                     XmlNode attrOrderStatus = xnode.Attributes.GetNamedItem("orderStatus");
                     if (attrOrderStatus != null)
                     {
-                        order.OrderStatus = attrOrderStatus.Value;
+                        Order.OrderStatus.New.ToString(attrOrderStatus.Value).ToLower();
 
                     }
                     XmlNode attrOrderClientPhone = xnode.Attributes.GetNamedItem("clientPhone");
@@ -145,7 +146,7 @@ namespace CRMproject
                         order.OrderId = Guid.Parse(attrGuid.Value);
                     }
                     
-                    
+                   
                     
                     orders.Add(order);
                 }
