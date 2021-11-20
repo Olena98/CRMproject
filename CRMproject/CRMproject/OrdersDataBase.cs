@@ -19,14 +19,15 @@ namespace CRMproject
         {
             xmlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "orders.xml");
             Orders = ReadXmlFile(xmlPath);
+           
         }
         public static void AddNewOrder(Order order)
         {         
             SaveOrder(order);
             Orders.Add(order);
-            
-
+          
         }
+       
         public static void SaveOrder(Order order)
         {
             FileInfo fileInfo = new FileInfo(xmlPath);
@@ -50,8 +51,7 @@ namespace CRMproject
             }
             catch
             {
-                rootElement = xDoc.CreateNode(XmlNodeType.Element, "orders", string.Empty);
-                rootElement = xDoc.CreateNode(XmlNodeType.Element, "story", string.Empty);
+                rootElement = xDoc.CreateNode(XmlNodeType.Element, "orders", string.Empty);               
                 xDoc.AppendChild(rootElement);
                 Console.WriteLine("An exception was thrown!");
             }
@@ -80,7 +80,8 @@ namespace CRMproject
             orderElem.Attributes.Append(guidAttr);
 
             rootElement.AppendChild(orderElem);
-            
+            var changeEntries = xDoc.OwnerDocument.CreateElement("story");
+           
             xDoc.Save(xmlPath);
 
         }
@@ -108,7 +109,15 @@ namespace CRMproject
                 if (xnode.Attributes.Count > 0)
                 {
                     Order order = new Order();
-                   
+                    Order.ChangeEntry changeEntry = new Order.ChangeEntry();
+                    order.ChangesEntries = new List<Order.ChangeEntry>();
+                    changeEntry.Status = (Order.OrderStatus)Enum.Parse(typeof(Order.OrderStatus),  xnode.Attributes["status"].Value);
+                    changeEntry.Date = DateTime.Parse(xnode.Attributes["date"].Value);
+                    foreach(XmlNode orderChanges in xnode.ChildNodes) 
+                    {
+                        order.ChangesEntries.Add(changeEntry);
+                    }
+                    
                     XmlNode attrOrderDate = xnode.Attributes.GetNamedItem("orderDate");
                     if (attrOrderDate != null)
                     {
@@ -122,8 +131,7 @@ namespace CRMproject
                     XmlNode attrOrderStatus = xnode.Attributes.GetNamedItem("orderStatus");
                     if (attrOrderStatus != null)
                     {
-                        Order.OrderStatus.New.ToString(attrOrderStatus.Value).ToLower();
-
+                       order.Status = (Order.OrderStatus)Enum.Parse(typeof(Order.OrderStatus), attrOrderStatus.Value);                       
                     }
                     XmlNode attrOrderClientPhone = xnode.Attributes.GetNamedItem("clientPhone");
                     if (attrOrderClientPhone != null)
@@ -145,15 +153,33 @@ namespace CRMproject
                     {
                         order.OrderId = Guid.Parse(attrGuid.Value);
                     }
-                    
-                   
-                    
+                                                           
                     orders.Add(order);
                 }
 
             }
             
             return orders;
+        }
+        static void ReadOrders(List<Order.ChangeEntry> changeEntries) 
+        {
+          foreach (Order.ChangeEntry changeEntry in changeEntries) 
+            {
+                Console.WriteLine(changeEntry.Status);
+                foreach(var date in changeEntry.Date.ToString()) 
+                {
+                    Console.WriteLine($"Changed date: {date}");
+                }
+                Console.WriteLine();
+            }
+        }
+       
+        public static void AddChangeEntriesNode(XmlNode orderNode, DateTime date, Order.OrderStatus status) 
+        {
+            var changeEntries = orderNode.OwnerDocument.CreateElement("story");
+            changeEntries.SetAttribute("date", date.ToString());
+            changeEntries.SetAttribute("status", status.ToString());
+            orderNode.AppendChild(changeEntries);
         }
     }
 }

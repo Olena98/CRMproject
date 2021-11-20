@@ -80,6 +80,7 @@ namespace CRMproject
                         break;
                 }
             }
+           
         }
 
         static void AddNewClient()
@@ -369,8 +370,14 @@ namespace CRMproject
                     orders.OrderNumber = number;
                 }
                 Console.WriteLine("Please, enter order status, for example: new, paid, is making up, sent, completed, canceled: ");
-                Order.OrderStatus.New.ToString(Console.ReadLine());
-
+                if (!Enum.TryParse(Console.ReadLine(), out Order.OrderStatus status))
+                {
+                    Console.WriteLine("Incorrect input. Please try again");
+                }
+                else
+                {
+                    orders.Status = status;
+                }
                 Console.WriteLine("Please, enter client phone number: ");               
                 orders.ClientPhone = Console.ReadLine();
 
@@ -423,8 +430,8 @@ namespace CRMproject
                         searchOrder = Console.ReadLine().ToLower() == "y";
                         break;
                     case "3":
-                        Console.WriteLine($"Please, enter status to search for an order (keywords for example: new, paid, is making up, sent, completed, canceled)");
-                        string orderStatus = Console.ReadLine();
+                        Console.WriteLine($"Please, enter status to search for an order (keywords for example: new, paid, is making up, sent, completed, canceled)");                       
+                        bool orderOfStatus = Enum.TryParse(Console.ReadLine(), out Order.OrderStatus orderStatus);
                         var resultStatus = OrderService.GetOrdersByStatus(orderStatus);
                         OutputOrderList(resultStatus);
                         Console.WriteLine("Return to orders search menu? (Y - to yes):");
@@ -486,7 +493,7 @@ namespace CRMproject
                 {
                     Console.WriteLine("Order date: " + o.OrderDate);                   
                     Console.WriteLine("Order number: " + o.OrderNumber);
-                    Console.WriteLine("Order status: " + Order.OrderStatus.New);
+                    Console.WriteLine("Order status: " + o.Status);
                     Console.WriteLine("Client phone: " + o.ClientPhone);
                     Console.WriteLine("Client id: " + o.ClientId);
                     Console.WriteLine("Product id: " + o.ProductsId);
@@ -536,14 +543,20 @@ namespace CRMproject
                         Console.WriteLine("Please, select orders number");
                         int index;
                         bool indexOfNumber = int.TryParse(Console.ReadLine(), out index);
-                        Console.WriteLine("You entered: " + index);              
+                        Console.WriteLine("You entered: " + index);
+                       
+                                             
+                        Console.WriteLine("Return to orders change menu? (Y - to yes):");
+                        changeOrder = Console.ReadLine().ToLower() == "y";
                         break;
                     case "2":                       
                         Console.WriteLine("Please, set new order status: ");
-                        changeEntry.Status = Console.ReadLine();
-                      
-                       
-                       
+                        bool status =  Enum.TryParse(Console.ReadLine(), out Order.OrderStatus order);
+                        changeEntry.Status = order;
+                        Console.WriteLine("You new order date:" + changeEntry.Date);
+                        changeEntry.Date = DateTime.Now;
+                        Console.WriteLine("Return to orders change menu? (Y - to yes):");
+                        changeOrder = Console.ReadLine().ToLower() == "y";
                         break;
                     case "3":
                         Console.WriteLine("Return to orders change menu? (Y - to yes):");
@@ -561,7 +574,7 @@ namespace CRMproject
                  Console.WriteLine("№: " + i);
                  Console.WriteLine("Order date: " + orders[i].OrderDate);
                  Console.WriteLine("Order number: " + orders[i].OrderNumber);
-                 Console.WriteLine("Order status: " + Order.OrderStatus.New);
+                 Console.WriteLine("Order status: " + orders[i].Status);
                  Console.WriteLine("Client phone: " + orders[i].ClientPhone);
                  Console.WriteLine("Client id: " + orders[i].ClientId);
                  Console.WriteLine("Product id: " + orders[i].ProductsId);

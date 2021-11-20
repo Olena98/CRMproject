@@ -28,10 +28,9 @@ namespace CRMproject
         {
             return OrdersDataBase.Orders.Where(o => o.OrderNumber.ToString().ToUpper().Contains(number.ToString())).ToList(); 
         }
-        public static List<Order> GetOrdersByStatus(string status) 
-        {
-            
-            return OrdersDataBase.Orders.Where(o => !string.IsNullOrEmpty(Order.OrderStatus.New.ToString()) && Order.OrderStatus.New.ToString().ToUpper().Contains(status.ToString())).ToList(); 
+        public static List<Order> GetOrdersByStatus(Order.OrderStatus status) 
+        {         
+            return OrdersDataBase.Orders.Where(o => !string.IsNullOrEmpty(o.Status.ToString()) && o.Status.ToString().ToUpper().Contains(status.ToString())).ToList(); 
         }       
         public static List<Order> GetOrdersByPhone(string phone) 
         {
