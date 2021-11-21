@@ -80,7 +80,7 @@ namespace CRMproject
                         break;
                 }
             }
-           
+
         }
 
         static void AddNewClient()
@@ -132,7 +132,7 @@ namespace CRMproject
                         {
                             var result = ClientsService.GetClientsByName(nameOfClient);
                             OutputUsersList(result);
-                        }                        
+                        }
                         Console.WriteLine("Return to clients search menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
                         break;
@@ -147,7 +147,7 @@ namespace CRMproject
                         {
                             var resultEmail = ClientsService.GetClientsByEmail(emailOfClient);
                             OutputUsersList(resultEmail);
-                        }                        
+                        }
                         Console.WriteLine("Return to clients search menu? (Y - to yes):");
                         searchofclient = Console.ReadLine().ToLower() == "y";
                         break;
@@ -205,7 +205,7 @@ namespace CRMproject
             }
         }
 
-        static void EditClient(List<Client>clients)
+        static void EditClient(List<Client> clients)
         {
             string clientsEdit = Console.ReadLine();
             var result = clients.ToString().Insert(0, clientsEdit);
@@ -227,31 +227,31 @@ namespace CRMproject
 
                 Console.WriteLine("Please, enter product price: ");
                 decimal price;
-                while(!decimal.TryParse(Console.ReadLine(), out price))
+                while (!decimal.TryParse(Console.ReadLine(), out price))
                 {
                     Console.WriteLine("Incorrect input. Please try again");
                 }
                 products.Price = price;
 
                 Console.WriteLine("Please, enter product number: ");
-                int number;                                 
-                    if (!int.TryParse(Console.ReadLine(), out number))
-                    {                       
-                        products.ProductNumber = UniqueNumericNumberHelper.GetUniqueProductNumericNumber();
-                    }
-                    else
-                    {
-                        products.ProductNumber = number;
-                    }
-                
-               
+                int number;
+                if (!int.TryParse(Console.ReadLine(), out number))
+                {
+                    products.ProductNumber = UniqueNumericNumberHelper.GetUniqueProductNumericNumber();
+                }
+                else
+                {
+                    products.ProductNumber = number;
+                }
+
+
                 Console.WriteLine("Please, indicate product availability, enter true or false: ");
                 bool existence;
-                while (!bool.TryParse(Console.ReadLine(), out existence)) 
+                while (!bool.TryParse(Console.ReadLine(), out existence))
                 {
                     Console.WriteLine("Incorrect input. Please try again");
-                }                
-                products.Existence = existence; 
+                }
+                products.Existence = existence;
                 Console.WriteLine("Products guid id: ");
                 products.Id = Guid.NewGuid();
                 Console.WriteLine(products.Id);
@@ -266,7 +266,7 @@ namespace CRMproject
         static void SearchProduct()
         {
             var searchproduct = true;
-            while (searchproduct) 
+            while (searchproduct)
             {
                 Console.WriteLine("Products search\n\t1.Search product by name\n\t2.Search product by description\n\t3.Search product by price" +
                         "\n\t4.Search product by number\n\t5.Search product by existence\n\t6.Search product by id\n\t7.Exit");
@@ -285,7 +285,7 @@ namespace CRMproject
                         {
                             var result = ProductService.GetProductsByName(nameOfProduct);
                             OutputProductList(result);
-                        }                        
+                        }
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
@@ -300,14 +300,14 @@ namespace CRMproject
                         {
                             var resultDescription = ProductService.GetProductsByDescription(descriptionOfProduct);
                             OutputProductList(resultDescription);
-                        }                        
+                        }
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
                     case "3":
                         Console.WriteLine($"Please, enter price to search for a product");
                         decimal price;
-                        bool  priceOfProduct = decimal.TryParse(Console.ReadLine(), out price);
+                        bool priceOfProduct = decimal.TryParse(Console.ReadLine(), out price);
                         var resultPrice = ProductService.GetProductsByPrice(price);
                         OutputProductList(resultPrice);
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
@@ -316,7 +316,7 @@ namespace CRMproject
                     case "4":
                         Console.WriteLine($"Please, enter number to search for a product");
                         int number;
-                        bool numberOfProduct = int.TryParse(Console.ReadLine(), out number);                         
+                        bool numberOfProduct = int.TryParse(Console.ReadLine(), out number);
                         var resultNumber = ProductService.GetProductsByNumber(number);
                         OutputProductList(resultNumber);
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
@@ -326,7 +326,7 @@ namespace CRMproject
                         Console.WriteLine($"Please, enter existence to search for a product (true or false)");
                         bool existence;
                         bool existenceOfProduct = bool.TryParse(Console.ReadLine(), out existence);
-                        var resultExistence = ProductService.GetProductsByExistence(existence);                       
+                        var resultExistence = ProductService.GetProductsByExistence(existence);
                         OutputProductList(resultExistence);
                         Console.WriteLine("Return to products search menu? (Y - to yes):");
                         searchproduct = Console.ReadLine().ToLower() == "y";
@@ -344,17 +344,17 @@ namespace CRMproject
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
                 }
-            }           
+            }
         }
 
-        static void AddOrder() 
+        static void AddOrder()
         {
             var addOrder = true;
-            while (addOrder) 
+            while (addOrder)
             {
                 var orders = new Order();
-               
-                              
+
+
                 Console.WriteLine("You order date: ");
                 orders.OrderDate = DateTime.Now;
                 Console.WriteLine(orders.OrderDate);
@@ -372,13 +372,13 @@ namespace CRMproject
                 Console.WriteLine("Please, enter order status, for example: new, paid, is making up, sent, completed, canceled: ");
                 if (!Enum.TryParse(Console.ReadLine(), out Order.OrderStatus status))
                 {
-                    Console.WriteLine("Incorrect input. Please try again");
+                    orders.Status = Order.OrderStatus.New;
                 }
                 else
                 {
                     orders.Status = status;
                 }
-                Console.WriteLine("Please, enter client phone number: ");               
+                Console.WriteLine("Please, enter client phone number: ");
                 orders.ClientPhone = Console.ReadLine();
 
                 Console.WriteLine("Orders guid id: ");
@@ -397,20 +397,20 @@ namespace CRMproject
                 Console.WriteLine("Continue entering new orders? (Y - to yes):");
                 addOrder = Console.ReadLine().ToLower() == "y";
 
-               
+
             }
         }
 
-        static void SearchOrder() 
+        static void SearchOrder()
         {
             var searchOrder = true;
-            while (searchOrder) 
+            while (searchOrder)
             {
-                Console.WriteLine("Orders search\n\t1.Search order by date\n\t2.Search order by number\n\t3.Search order by status\n\t4.Search order by clients phone number\n\t5.Search order by client id"+
+                Console.WriteLine("Orders search\n\t1.Search order by date\n\t2.Search order by number\n\t3.Search order by status\n\t4.Search order by clients phone number\n\t5.Search order by client id" +
                     "\n\t6.Search order by product id\n\t7.Search order by id\n\t8.Exit");
                 Console.WriteLine("Enter the item number: ");
                 string itemNumber = Console.ReadLine();
-                switch (itemNumber) 
+                switch (itemNumber)
                 {
                     case "1":
                         Console.WriteLine($"Please, enter date to search for an order");
@@ -430,7 +430,7 @@ namespace CRMproject
                         searchOrder = Console.ReadLine().ToLower() == "y";
                         break;
                     case "3":
-                        Console.WriteLine($"Please, enter status to search for an order (keywords for example: new, paid, is making up, sent, completed, canceled)");                       
+                        Console.WriteLine($"Please, enter status to search for an order (keywords for example: new, paid, is making up, sent, completed, canceled)");
                         bool orderOfStatus = Enum.TryParse(Console.ReadLine(), out Order.OrderStatus orderStatus);
                         var resultStatus = OrderService.GetOrdersByStatus(orderStatus);
                         OutputOrderList(resultStatus);
@@ -439,8 +439,8 @@ namespace CRMproject
                         break;
                     case "4":
                         Console.WriteLine("Please, enter clients phone to search for an order: ");
-                        string phoneNumber = Console.ReadLine();                                               
-                        var resultPhone = OrderService.GetOrdersByPhone(phoneNumber);                       
+                        string phoneNumber = Console.ReadLine();
+                        var resultPhone = OrderService.GetOrdersByPhone(phoneNumber);
                         OutputOrderList(resultPhone);
                         Console.WriteLine("Return to orders search menu? (Y - to yes):");
                         searchOrder = Console.ReadLine().ToLower() == "y";
@@ -448,15 +448,15 @@ namespace CRMproject
                     case "5":
                         Console.WriteLine("Please, enter client id to search for an order: ");
                         Guid guidOfClientId = Guid.Parse(Console.ReadLine());
-                        var resultClientGuidId = OrderService.GetOrdersByClientGuid(guidOfClientId);                      
+                        var resultClientGuidId = OrderService.GetOrdersByClientGuid(guidOfClientId);
                         OutputOrderList(resultClientGuidId);
                         Console.WriteLine("Return to orders search menu? (Y - to yes):");
                         searchOrder = Console.ReadLine().ToLower() == "y";
                         break;
                     case "6":
                         Console.WriteLine("Please, enter product id to search for an order: ");
-                        Guid guidOfProductId = Guid.Parse(Console.ReadLine());                      
-                        var resultProductGuidId = OrderService.GetOrdersByProductsGuid(guidOfProductId);                       
+                        Guid guidOfProductId = Guid.Parse(Console.ReadLine());
+                        var resultProductGuidId = OrderService.GetOrdersByProductsGuid(guidOfProductId);
                         OutputOrderList(resultProductGuidId);
                         Console.WriteLine("Return to orders search menu? (Y - to yes):");
                         searchOrder = Console.ReadLine().ToLower() == "y";
@@ -476,22 +476,22 @@ namespace CRMproject
                         break;
 
                 }
-            }     
+            }
         }
 
-        static void OutputOrderList(List<Order> orders) 
+        static void OutputOrderList(List<Order> orders)
         {
-            if(orders.Count == 0) 
+            if (orders.Count == 0)
             {
                 Console.WriteLine("No results, please try again");
             }
-            else 
+            else
             {
                 Console.WriteLine("Count of orders: " + orders.Count);
 
                 foreach (Order o in orders)
                 {
-                    Console.WriteLine("Order date: " + o.OrderDate);                   
+                    Console.WriteLine("Order date: " + o.OrderDate);
                     Console.WriteLine("Order number: " + o.OrderNumber);
                     Console.WriteLine("Order status: " + o.Status);
                     Console.WriteLine("Client phone: " + o.ClientPhone);
@@ -509,7 +509,7 @@ namespace CRMproject
         {
             if (products.Count == 0)
             {
-                Console.WriteLine("No results, please try again");               
+                Console.WriteLine("No results, please try again");
             }
             else
             {
@@ -527,34 +527,41 @@ namespace CRMproject
                 }
             }
         }
-        static void ChangeOrder() 
+        static void ChangeOrder()
         {
             Order.ChangeEntry changeEntry = new Order.ChangeEntry();
             var changeOrder = true;
-            while (changeOrder) 
+            while (changeOrder)
             {
-                Console.WriteLine("Change order menu\n\t1. Find order for changes\n\t2. Set orders status and set orders date\n\t4. Exit");
+                Console.WriteLine("Change order menu\n\t1. Find order for changes and set orders status and set orders date\n\t4. Exit");
                 Console.WriteLine("Enter the item number: ");
                 string itemNumber = Console.ReadLine();
-                switch (itemNumber) 
+                switch (itemNumber)
                 {
                     case "1":
-                        OutputChangeOrderList(OrdersDataBase.Orders);
-                        Console.WriteLine("Please, select orders number");
+                        Console.WriteLine("Please, enter your phone number to search orders: ");
+                        string phoneNumber = Console.ReadLine();
+                        var resultPhone = OrderService.GetOrdersByPhone(phoneNumber);
+                        OutputChangeOrderList(resultPhone);
+                        Console.WriteLine("Please, select number of order: ");
                         int index;
-                        bool indexOfNumber = int.TryParse(Console.ReadLine(), out index);
-                        Console.WriteLine("You entered: " + index);
-                       
-                                             
-                        Console.WriteLine("Return to orders change menu? (Y - to yes):");
-                        changeOrder = Console.ReadLine().ToLower() == "y";
-                        break;
-                    case "2":                       
-                        Console.WriteLine("Please, set new order status: ");
-                        bool status =  Enum.TryParse(Console.ReadLine(), out Order.OrderStatus order);
-                        changeEntry.Status = order;
-                        Console.WriteLine("You new order date:" + changeEntry.Date);
-                        changeEntry.Date = DateTime.Now;
+                        if (int.TryParse(Console.ReadLine(), out index))
+                        {
+                            Console.WriteLine(OrdersDataBase.Orders[index]);
+                            changeEntry.Status = OrdersDataBase.Orders[index].Status;
+                            Console.WriteLine("Maybe, you want add changes to order? (Y - to yes): ");
+                            changeOrder = Console.ReadLine().ToLower() == "y";
+                            Console.WriteLine("Please, set new order status: ");
+                            bool status = Enum.TryParse(Console.ReadLine(), out Order.OrderStatus order);
+                           
+                            Console.WriteLine("You new order date:" + changeEntry.Date);
+                            changeEntry.Date = DateTime.Now;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Inccorect input, please, try again!");
+                        }
+                                              
                         Console.WriteLine("Return to orders change menu? (Y - to yes):");
                         changeOrder = Console.ReadLine().ToLower() == "y";
                         break;
@@ -562,31 +569,45 @@ namespace CRMproject
                         Console.WriteLine("Return to orders change menu? (Y - to yes):");
                         changeOrder = Console.ReadLine().ToLower() == "y";
                         break;
-                       
+
                 }
             }
         }
         static void OutputChangeOrderList(List<Order> orders)
         {
             Console.WriteLine("Count of orders: " + orders.Count);
-            for (int i = 1; i < orders.Count; i++) 
+            for (int i = 1; i < orders.Count; i++)
             {
-                 Console.WriteLine("№: " + i);
-                 Console.WriteLine("Order date: " + orders[i].OrderDate);
-                 Console.WriteLine("Order number: " + orders[i].OrderNumber);
-                 Console.WriteLine("Order status: " + orders[i].Status);
-                 Console.WriteLine("Client phone: " + orders[i].ClientPhone);
-                 Console.WriteLine("Client id: " + orders[i].ClientId);
-                 Console.WriteLine("Product id: " + orders[i].ProductsId);
-                 Console.WriteLine("Id: " + orders[i].OrderId);
-                 Console.WriteLine();
+                Console.WriteLine(i);
+                Console.WriteLine("Order date: " + orders[i].OrderDate);
+                Console.WriteLine("Order number: " + orders[i].OrderNumber);
+                Console.WriteLine("Order status: " + orders[i].Status);
+                Console.WriteLine("Client phone: " + orders[i].ClientPhone);
+                Console.WriteLine("Client id: " + orders[i].ClientId);
+                Console.WriteLine("Product id: " + orders[i].ProductsId);
+                Console.WriteLine("Id: " + orders[i].OrderId);
+                Console.WriteLine();
+
+
 
             }
-           
+
+        }
+        static void OutputChangeEntries(List<Order.ChangeEntry> changeEntries)
+        {
+            Console.WriteLine("Count of changes: " + changeEntries.Count);
+            for (int i = 1; i < changeEntries.Count; i++)
+            {
+                Console.WriteLine(i);
+                Console.WriteLine("Order date: " + changeEntries[i].Date);
+                Console.WriteLine("Order status: " + changeEntries[i].Status);
+
+                Console.WriteLine();
+
+            }
 
 
         }
-        
     }
 }
 

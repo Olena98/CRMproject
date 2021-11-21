@@ -109,14 +109,7 @@ namespace CRMproject
                 if (xnode.Attributes.Count > 0)
                 {
                     Order order = new Order();
-                    Order.ChangeEntry changeEntry = new Order.ChangeEntry();
-                    order.ChangesEntries = new List<Order.ChangeEntry>();
-                    changeEntry.Status = (Order.OrderStatus)Enum.Parse(typeof(Order.OrderStatus),  xnode.Attributes["status"].Value);
-                    changeEntry.Date = DateTime.Parse(xnode.Attributes["date"].Value);
-                    foreach(XmlNode orderChanges in xnode.ChildNodes) 
-                    {
-                        order.ChangesEntries.Add(changeEntry);
-                    }
+                   
                     
                     XmlNode attrOrderDate = xnode.Attributes.GetNamedItem("orderDate");
                     if (attrOrderDate != null)
