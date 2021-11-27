@@ -37,8 +37,8 @@ namespace CRMproject
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
                     case "3":
-                        Console.WriteLine("You have chosen edit of a client");
-                        EditClient(ClientsDataBase.Clients);
+                        Console.WriteLine("You have chosen change of a client");
+                        ChangeClient();
                         Console.WriteLine("Return to main menu? (Y - to yes):");
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
@@ -67,7 +67,7 @@ namespace CRMproject
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
                     case "8":
-                        Console.WriteLine("You have chosen by search order");
+                        Console.WriteLine("You have chosen by change order");
                         ChangeOrder();
                         Console.WriteLine("Return to main menu? (Y - to yes):");
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
@@ -205,11 +205,163 @@ namespace CRMproject
             }
         }
 
-        static void EditClient(List<Client> clients)
+        static void ChangeClient()
         {
-            string clientsEdit = Console.ReadLine();
-            var result = clients.ToString().Insert(0, clientsEdit);
-            Console.WriteLine(result);
+            var changeClient = true;
+            while (changeClient) 
+            {
+                Console.WriteLine("Change client menu\n\t1. Find client for changes and set changes\n\t2. Exit");
+                Console.WriteLine("Enter item number: ");
+                string itemNumber = Console.ReadLine();
+                switch (itemNumber) 
+                {
+                    case "1":
+                        Console.WriteLine("Please, enter your phone number to search orders: ");
+                        string phoneNumber = Console.ReadLine();
+                        var resultPhone = ClientsService.GetClientsByPhone(phoneNumber);
+                        OutputChangeClientList(resultPhone);
+                        Console.WriteLine($"Please, select number of client (0-{resultPhone.Count - 1}): ");
+                        int index;
+                        if (int.TryParse(Console.ReadLine(), out index))
+                        {
+                            Console.WriteLine(resultPhone[index]);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Inccorect input, please, try again!");
+                        }
+                        Console.WriteLine("Maybe, you want to add changes to client? (Y - to yes): ");
+                        if (changeClient = Console.ReadLine().ToLower() == "y")
+                        {
+                            Console.WriteLine("1.Set new client name \n\t2. Set new client surname\n\t3. Set new client email \n\t4. Set new client phone");
+                            Console.WriteLine("Enter item number: ");
+                            string setChanges = Console.ReadLine();
+                            switch (setChanges)
+                            {
+                                case "1":
+                                    Console.WriteLine("Please, set new client name: ");
+                                    string changedName = Console.ReadLine();
+                                    if (String.IsNullOrWhiteSpace(changedName))
+                                    {
+                                        if (changedName == resultPhone[index].Name)
+                                        {
+                                            Console.WriteLine("You entered same name of the client.");
+                                        }
+                                        else
+                                        {
+                                            var newChangeEntry = new Client.ChangeEntry();
+                                            newChangeEntry.Name = resultPhone[index].Name;
+                                            resultPhone[index].ChangesEntries.Add(newChangeEntry);
+                                            resultPhone[index].Name = changedName;
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        Console.WriteLine("Inccorect input, please, try again!");
+                                    }
+                                    break;
+                                case "2":
+                                    Console.WriteLine("Please, set new client surname: ");
+                                    string changedSurname = Console.ReadLine();
+                                    if (String.IsNullOrWhiteSpace(changedSurname))
+                                    {
+                                        if (changedSurname == resultPhone[index].Surname)
+                                        {
+                                            Console.WriteLine("You entered same surname of the client.");
+                                        }
+                                        else
+                                        {
+                                            var newChangeEntry = new Client.ChangeEntry();
+                                            newChangeEntry.Surname = resultPhone[index].Surname;
+                                            resultPhone[index].ChangesEntries.Add(newChangeEntry);
+                                            resultPhone[index].Surname = changedSurname;
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        Console.WriteLine("Inccorect input, please, try again!");
+                                    }
+                                    break;
+                                case "3":
+                                    Console.WriteLine("Please, set new client email: ");
+                                    string changedEmail = Console.ReadLine();
+                                    if (String.IsNullOrWhiteSpace(changedEmail))
+                                    {
+                                        if (changedEmail == resultPhone[index].Email)
+                                        {
+                                            Console.WriteLine("You entered same email of the client.");
+                                        }
+                                        else
+                                        {
+                                            var newChangeEntry = new Client.ChangeEntry();
+                                            newChangeEntry.Email = resultPhone[index].Email;
+                                            resultPhone[index].ChangesEntries.Add(newChangeEntry);
+                                            resultPhone[index].Email = changedEmail;
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        Console.WriteLine("Inccorect input, please, try again!");
+                                    }
+                                    break;
+                                case "4":
+                                    Console.WriteLine("Please, set new client phone number: ");
+                                    string changedPhone = Console.ReadLine();
+                                    if (String.IsNullOrWhiteSpace(changedPhone))
+                                    {
+                                        if (changedPhone == resultPhone[index].PhoneNumber)
+                                        {
+                                            Console.WriteLine("You entered same phone number of the client.");
+                                        }
+                                        else
+                                        {
+                                            var newChangeEntry = new Client.ChangeEntry();
+                                            newChangeEntry.PhoneNumber = resultPhone[index].PhoneNumber;
+                                            resultPhone[index].ChangesEntries.Add(newChangeEntry);
+                                            resultPhone[index].PhoneNumber = changedPhone;
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        Console.WriteLine("Inccorect input, please, try again!");
+                                    }
+                                    break;
+                            }
+                               
+                        }
+                         
+                        else
+                        {
+                            break;
+                        }
+
+                        Console.WriteLine("Return to orders change menu? (Y - to yes):");
+                        changeClient = Console.ReadLine().ToLower() == "y";
+                        break;
+
+                    case "2":
+                        Console.WriteLine("Return to orders change menu? (Y - to yes):");
+                        changeClient = Console.ReadLine().ToLower() == "y";
+                        break;
+                }
+               
+            }
+        }
+        static void OutputChangeClientList(List<Client> clients)
+        {
+            Console.WriteLine("Count of clients: " + clients.Count);
+            for (int i = 0; i < clients.Count; i++)
+            {
+                Console.WriteLine(i);
+                Console.WriteLine("Client name: " + clients[i].Name);
+                Console.WriteLine("Client lastname: " + clients[i].LastName);
+                Console.WriteLine("Client surname: " + clients[i].Surname);
+                Console.WriteLine("Client phone: " + clients[i].PhoneNumber);
+                Console.WriteLine("Client email: " + clients[i].Email);
+               
+                Console.WriteLine();
+
+            }
         }
 
         static void AddProduct()
@@ -504,7 +656,6 @@ namespace CRMproject
             }
         }
 
-
         static void OutputProductList(List<Product> products)
         {
             if (products.Count == 0)
@@ -532,7 +683,7 @@ namespace CRMproject
             var changeOrder = true;
             while (changeOrder)
             {
-                Console.WriteLine("Change order menu\n\t1. Find order for changes and set orders status and set orders date\n\t4. Exit");
+                Console.WriteLine("Change order menu\n\t1. Find order for changes and set orders status\n\t2. Exit");
                 Console.WriteLine("Enter the item number: ");
                 string itemNumber = Console.ReadLine();
                 switch (itemNumber)
@@ -553,36 +704,42 @@ namespace CRMproject
                             Console.WriteLine("Inccorect input, please, try again!");
                         }
                         Console.WriteLine("Maybe, you want to add changes to order? (Y - to yes): ");
-                        changeOrder = Console.ReadLine().ToLower() == "y";
-                        Console.WriteLine("Please, set new order status: ");
-
-                        if(Enum.TryParse(Console.ReadLine(), out Order.OrderStatus order))
+                        if (changeOrder = Console.ReadLine().ToLower() == "y")
                         {
-                            if(order == resultPhone[index].Status)
+                            Console.WriteLine("Please, set new order status: ");
+
+                            if (Enum.TryParse(Console.ReadLine(), out Order.OrderStatus order))
                             {
-                                Console.WriteLine("You entered same status of the order.");
+                                if (order == resultPhone[index].Status)
+                                {
+                                    Console.WriteLine("You entered same status of the order.");
+                                }
+                                else
+                                {
+                                    var newChangeEntry = new Order.ChangeEntry();
+                                    newChangeEntry.Date = DateTime.Now;
+                                    newChangeEntry.Status = resultPhone[index].Status;
+                                    resultPhone[index].ChangesEntries.Add(newChangeEntry);
+
+                                    resultPhone[index].Status = order;
+                                    OrdersDataBase.SaveOrdersList();
+                                }
+
                             }
                             else
                             {
-                                var newChangeEntry = new Order.ChangeEntry();
-                                newChangeEntry.Date = DateTime.Now;
-                                newChangeEntry.Status = resultPhone[index].Status;
-                                resultPhone[index].ChangesEntries.Add(newChangeEntry);
-
-                                resultPhone[index].Status = order;
-                                OrdersDataBase.SaveOrdersList();
+                                Console.WriteLine("Incorrect new status of order");
                             }
-                            
                         }
-                        else
+                        else 
                         {
-                            Console.WriteLine("Incorrect new status of order");
+                            break;
                         }
 
                         Console.WriteLine("Return to orders change menu? (Y - to yes):");
                         changeOrder = Console.ReadLine().ToLower() == "y";
                         break;
-                    case "3":
+                    case "2":
                         Console.WriteLine("Return to orders change menu? (Y - to yes):");
                         changeOrder = Console.ReadLine().ToLower() == "y";
                         break;
@@ -605,26 +762,13 @@ namespace CRMproject
                 Console.WriteLine("Id: " + orders[i].OrderId);
                 Console.WriteLine();
 
-
-
             }
 
         }
-        static void OutputChangeEntries(List<Order.ChangeEntry> changeEntries)
-        {
-            Console.WriteLine("Count of changes: " + changeEntries.Count);
-            for (int i = 1; i < changeEntries.Count; i++)
-            {
-                Console.WriteLine(i);
-                Console.WriteLine("Order date: " + changeEntries[i].Date);
-                Console.WriteLine("Order status: " + changeEntries[i].Status);
-
-                Console.WriteLine();
-
-            }
+       
 
 
-        }
+        
     }
 }
 
