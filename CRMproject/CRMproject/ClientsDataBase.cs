@@ -16,8 +16,7 @@ namespace CRMproject
         public static void Initialize()
         {
             xmlPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "clients.xml");           
-            Clients = ReadXmlFile(xmlPath);
-                    
+            Clients = ReadXmlFile(xmlPath);                    
         }
         
         public static void AddClient(Client client)
@@ -86,9 +85,8 @@ namespace CRMproject
             var doc = new XmlDocument();           
             if (!File.Exists(xmlPath))
             {
-                File.Create(xmlPath);
                 doc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
-                doc.CreateElement("clients");                       
+                doc.Save(xmlPath);                     
             }
             else
             {
