@@ -13,12 +13,19 @@ namespace CRMproject
         public string ClientPhone { get; set; }
         public Guid ClientId { get; set; }
         public Guid ProductsId { get; set; }
-        public List<ChangeEntry> ChangesEntries { get; set; }
+        public List<ChangeEntry> ChangesEntries { get; set; } = new List<ChangeEntry>();
 
         public override string ToString()
         {
-            return "Order Id: " + OrderId.ToString() + "\n\t Order Number: " + OrderNumber.ToString() + "\n\t Order date: " + OrderDate.ToString() + "\n\t Order Status: " + Status.ToString() + 
+            var result = "Order Id: " + OrderId.ToString() + "\n\t Order Number: " + OrderNumber.ToString() + "\n\t Order date: " + OrderDate.ToString() + "\n\t Order Status: " + Status.ToString() + 
                 "\n\t Client phone: " + ClientPhone + "\n\t Client Id: " + ClientId.ToString() + "\n\t Products Id: " + ProductsId.ToString();
+            result += $"\n\tChange Entries Count: {ChangesEntries.Count}\n";
+            foreach(var entry in ChangesEntries)
+            {
+                result += $"\t\t{entry.Date} - {entry.Status}\n";
+            }
+            result = result.Remove(result.Length - 1);
+            return result;
         }
 
 

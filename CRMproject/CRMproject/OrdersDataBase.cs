@@ -11,8 +11,6 @@ namespace CRMproject
     {
         public static List<Order> Orders { get; private set; }
 
-        
-
         private static string xmlPath;
 
         public static void Initialize() 
@@ -23,69 +21,46 @@ namespace CRMproject
         }
         public static void AddNewOrder(Order order)
         {         
-            SaveOrder(order);
             Orders.Add(order);
-          
+            SaveOrdersList();
         }
-       
-        public static void SaveOrder(Order order)
+
+        public static void SaveOrdersList()
         {
-            FileInfo fileInfo = new FileInfo(xmlPath);
+            if(Orders == null || Orders.Count == 0)
+            {
+                return;
+            }
+
             XmlDocument xDoc = new XmlDocument();
-            XmlNode rootElement = null;
+            XmlNode rootElement = xDoc.CreateNode(XmlNodeType.Element, "orders", string.Empty);
+            xDoc.AppendChild(rootElement);
 
-            try
+            foreach(var order in Orders)
             {
-                if (fileInfo.Exists)
-                {
-                    xDoc.Load(xmlPath);
-                    rootElement = xDoc.DocumentElement;
-                }
-                else
-                {
-                    File.Create(xmlPath);
-                    rootElement = xDoc.CreateNode(XmlNodeType.Element, "orders", string.Empty);
-                    rootElement = xDoc.CreateNode(XmlNodeType.Element, "story", string.Empty);
-                    xDoc.AppendChild(rootElement);
-                }
+                AppendOrderNode(rootElement, order);
             }
-            catch
-            {
-                rootElement = xDoc.CreateNode(XmlNodeType.Element, "orders", string.Empty);               
-                xDoc.AppendChild(rootElement);
-                Console.WriteLine("An exception was thrown!");
-            }
-            XmlElement orderElem = xDoc.CreateElement("order");
-            XmlAttribute orderDateAttr = xDoc.CreateAttribute("orderDate");
-            orderDateAttr.Value = order.OrderDate.ToString();                          
-            XmlAttribute orderStatusAttr = xDoc.CreateAttribute("orderStatus");
-            orderStatusAttr.Value = Order.OrderStatus.New.ToString().ToLower();           
-            XmlAttribute orderNumberAttr = xDoc.CreateAttribute("orderNumber");
-            orderNumberAttr.Value = order.OrderNumber.ToString();
-            XmlAttribute orderClientPhoneAttr = xDoc.CreateAttribute("clientPhone");
-            orderClientPhoneAttr.Value = order.ClientPhone;
-            XmlAttribute clientIdAttr = xDoc.CreateAttribute("clientsId");
-            clientIdAttr.Value = order.ClientId.ToString();
-            XmlAttribute productIdAttr = xDoc.CreateAttribute("productId");
-            productIdAttr.Value = order.ProductsId.ToString();
-            XmlAttribute guidAttr = xDoc.CreateAttribute("guid");
-            guidAttr.Value = order.OrderId.ToString();
 
-            orderElem.Attributes.Append(orderDateAttr);
-            orderElem.Attributes.Append(orderNumberAttr);
-            orderElem.Attributes.Append(orderStatusAttr);
-            orderElem.Attributes.Append(orderClientPhoneAttr);
-            orderElem.Attributes.Append(clientIdAttr);
-            orderElem.Attributes.Append(productIdAttr);
-            orderElem.Attributes.Append(guidAttr);
-
-            rootElement.AppendChild(orderElem);
-            var changeEntries = xDoc.OwnerDocument.CreateElement("story");
-           
             xDoc.Save(xmlPath);
-
         }
        
+        private static void AppendOrderNode(XmlNode parentNode, Order order)
+        {
+            XmlElement orderElem = parentNode.OwnerDocument.CreateElement("order");
+            orderElem.SetAttribute("guid", order.OrderId.ToString());
+            orderElem.SetAttribute("orderDate", order.OrderDate.ToString());
+            orderElem.SetAttribute("orderStatus", order.Status.ToString());
+            orderElem.SetAttribute("orderNumber", order.OrderNumber.ToString());
+            orderElem.SetAttribute("clientPhone", order.ClientPhone?.ToString());
+            orderElem.SetAttribute("clientsId", order.ClientId.ToString());
+            orderElem.SetAttribute("productId", order.ProductsId.ToString());
+
+            AddChangeEntriesNode(orderElem, order.ChangesEntries);
+
+            parentNode.AppendChild(orderElem);
+
+        }
+
         public static List<Order> ReadXmlFile(string xmlPath)
         {
             
@@ -105,11 +80,9 @@ namespace CRMproject
           
             foreach (XmlNode xnode in xRoot)
             {
-
                 if (xnode.Attributes.Count > 0)
                 {
                     Order order = new Order();
-                   
                     
                     XmlNode attrOrderDate = xnode.Attributes.GetNamedItem("orderDate");
                     if (attrOrderDate != null)
@@ -146,7 +119,20 @@ namespace CRMproject
                     {
                         order.OrderId = Guid.Parse(attrGuid.Value);
                     }
-                                                           
+
+                    var changeEntries = new List<Order.ChangeEntry>();
+                    foreach(XmlNode storyNode in xnode.ChildNodes)
+                    {
+                        if(storyNode.Name.Equals("story"))
+                        {
+                            var entry = new Order.ChangeEntry();
+                            entry.Status = (Order.OrderStatus)Enum.Parse(typeof(Order.OrderStatus), storyNode.Attributes["status"].Value);
+                            entry.Date = DateTime.Parse(storyNode.Attributes["date"].Value);
+                            changeEntries.Add(entry);
+                        }
+                    }
+
+                    order.ChangesEntries = changeEntries;
                     orders.Add(order);
                 }
 
@@ -154,25 +140,22 @@ namespace CRMproject
             
             return orders;
         }
-        static void ReadOrders(List<Order.ChangeEntry> changeEntries) 
-        {
-          foreach (Order.ChangeEntry changeEntry in changeEntries) 
-            {
-                Console.WriteLine(changeEntry.Status);
-                foreach(var date in changeEntry.Date.ToString()) 
-                {
-                    Console.WriteLine($"Changed date: {date}");
-                }
-                Console.WriteLine();
-            }
-        }
        
-        public static void AddChangeEntriesNode(XmlNode orderNode, DateTime date, Order.OrderStatus status) 
+        public static void AddChangeEntriesNode(XmlNode orderNode, List<Order.ChangeEntry> entries) 
         {
-            var changeEntries = orderNode.OwnerDocument.CreateElement("story");
-            changeEntries.SetAttribute("date", date.ToString());
-            changeEntries.SetAttribute("status", status.ToString());
-            orderNode.AppendChild(changeEntries);
+            if(entries == null || entries.Count == 0)
+            {
+                return;
+            }
+
+            foreach(var entry in entries)
+            {
+                var changeEntry = orderNode.OwnerDocument.CreateElement("story");
+                changeEntry.SetAttribute("date", entry.Date.ToString());
+                changeEntry.SetAttribute("status", entry.Status.ToString());
+                orderNode.AppendChild(changeEntry);
+            }
+
         }
     }
 }

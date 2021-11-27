@@ -529,7 +529,6 @@ namespace CRMproject
         }
         static void ChangeOrder()
         {
-            Order.ChangeEntry changeEntry = new Order.ChangeEntry();
             var changeOrder = true;
             while (changeOrder)
             {
@@ -543,25 +542,43 @@ namespace CRMproject
                         string phoneNumber = Console.ReadLine();
                         var resultPhone = OrderService.GetOrdersByPhone(phoneNumber);
                         OutputChangeOrderList(resultPhone);
-                        Console.WriteLine("Please, select number of order: ");
+                        Console.WriteLine($"Please, select number of order (0-{resultPhone.Count - 1}): ");
                         int index;
                         if (int.TryParse(Console.ReadLine(), out index))
                         {
-                            Console.WriteLine(OrdersDataBase.Orders[index]);
-                            changeEntry.Status = OrdersDataBase.Orders[index].Status;
-                            Console.WriteLine("Maybe, you want add changes to order? (Y - to yes): ");
-                            changeOrder = Console.ReadLine().ToLower() == "y";
-                            Console.WriteLine("Please, set new order status: ");
-                            bool status = Enum.TryParse(Console.ReadLine(), out Order.OrderStatus order);
-                           
-                            Console.WriteLine("You new order date:" + changeEntry.Date);
-                            changeEntry.Date = DateTime.Now;
+                            Console.WriteLine(resultPhone[index]);                         
                         }
                         else
                         {
                             Console.WriteLine("Inccorect input, please, try again!");
                         }
-                                              
+                        Console.WriteLine("Maybe, you want to add changes to order? (Y - to yes): ");
+                        changeOrder = Console.ReadLine().ToLower() == "y";
+                        Console.WriteLine("Please, set new order status: ");
+
+                        if(Enum.TryParse(Console.ReadLine(), out Order.OrderStatus order))
+                        {
+                            if(order == resultPhone[index].Status)
+                            {
+                                Console.WriteLine("You entered same status of the order.");
+                            }
+                            else
+                            {
+                                var newChangeEntry = new Order.ChangeEntry();
+                                newChangeEntry.Date = DateTime.Now;
+                                newChangeEntry.Status = resultPhone[index].Status;
+                                resultPhone[index].ChangesEntries.Add(newChangeEntry);
+
+                                resultPhone[index].Status = order;
+                                OrdersDataBase.SaveOrdersList();
+                            }
+                            
+                        }
+                        else
+                        {
+                            Console.WriteLine("Incorrect new status of order");
+                        }
+
                         Console.WriteLine("Return to orders change menu? (Y - to yes):");
                         changeOrder = Console.ReadLine().ToLower() == "y";
                         break;
@@ -576,7 +593,7 @@ namespace CRMproject
         static void OutputChangeOrderList(List<Order> orders)
         {
             Console.WriteLine("Count of orders: " + orders.Count);
-            for (int i = 1; i < orders.Count; i++)
+            for (int i = 0; i < orders.Count; i++)
             {
                 Console.WriteLine(i);
                 Console.WriteLine("Order date: " + orders[i].OrderDate);
