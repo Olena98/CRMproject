@@ -21,62 +21,40 @@ namespace CRMproject
         
         public static void AddClient(Client client)
         {
-            SaveClient(client);
             Clients.Add(client);
+            SaveClientsList();            
         }
-        public static void SaveClient(Client client)
+        public static void SaveClientsList()
         {
-           
-            FileInfo fileInf = new FileInfo(xmlPath);
+            if (Clients == null || Clients.Count == 0)
+            {
+                return;
+            }
+
             XmlDocument xDoc = new XmlDocument();
-            XmlNode rootElement = null;
-          
-            try
+            XmlNode rootElement = xDoc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
+            xDoc.AppendChild(rootElement);
+
+            foreach (var client in Clients)
             {
-                if (fileInf.Exists)
-                {
-                    xDoc.Load(xmlPath);
-                    rootElement = xDoc.DocumentElement;
-                }
-                else
-                {                   
-                    rootElement = xDoc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
-                    xDoc.AppendChild(rootElement);
-                }
+                AppendOrderNode(rootElement, client);
             }
-            catch
-            {
-                rootElement = xDoc.CreateNode(XmlNodeType.Element, "clients", string.Empty);
-                xDoc.AppendChild(rootElement);
-                Console.WriteLine("An exception was thrown!");
-            }
-
-            XmlElement clientElem = xDoc.CreateElement("client");
-
-            XmlAttribute nameAttr = xDoc.CreateAttribute("name");
-            nameAttr.Value = client.Name;
-            XmlAttribute lastnameAttr = xDoc.CreateAttribute("lastname");
-            lastnameAttr.Value = client.LastName;
-            XmlAttribute surnameAttr = xDoc.CreateAttribute("surname");
-            surnameAttr.Value = client.Surname;
-            XmlAttribute emailAttr = xDoc.CreateAttribute("email");
-            emailAttr.Value = client.Email;
-            XmlAttribute phonenumberAttr = xDoc.CreateAttribute("phonenumber");
-            phonenumberAttr.Value = client.PhoneNumber;
-            XmlAttribute guidAttr = xDoc.CreateAttribute("guid");
-            guidAttr.Value = client.Id.ToString();
-
-            clientElem.Attributes.Append(nameAttr);
-            clientElem.Attributes.Append(lastnameAttr);
-            clientElem.Attributes.Append(surnameAttr);
-            clientElem.Attributes.Append(emailAttr);
-            clientElem.Attributes.Append(phonenumberAttr);
-            clientElem.Attributes.Append(guidAttr);
-
-            rootElement.AppendChild(clientElem);
             xDoc.Save(xmlPath);
-            
-       
+        }
+
+        private static void AppendOrderNode(XmlNode parentNode, Client client) 
+        {
+            XmlElement clientElem = parentNode.OwnerDocument.CreateElement("client");
+            clientElem.SetAttribute("guid", client.Id.ToString());
+            clientElem.SetAttribute("name", client.Name);
+            clientElem.SetAttribute("lastname", client.LastName);
+            clientElem.SetAttribute("surname", client.Surname);
+            clientElem.SetAttribute("email", client.Email);
+            clientElem.SetAttribute("phonenumber", client.PhoneNumber);
+
+            AddChangeEntriesNode(clientElem, client.ChangesEntries);
+            parentNode.AppendChild(clientElem);
+
         }
 
         public static List<Client> ReadXmlFile(string xmlPath)
@@ -130,10 +108,45 @@ namespace CRMproject
                     {
                         client.Id = Guid.Parse(attrGuid.Value);
                     }
+                    var changeEntries = new List<Client.ChangeEntry>();
+                    foreach (XmlNode storyNode in xnode.ChildNodes)
+                    {
+                        if (storyNode.Name.Equals("story"))
+                        {
+                            var entry = new Client.ChangeEntry();
+                            entry.Name = storyNode.Attributes["name"].Value;
+                            entry.Surname = storyNode.Attributes["surname"].Value;
+                            entry.PhoneNumber = storyNode.Attributes["phonenumber"].Value;
+                            entry.Email = storyNode.Attributes["email"].Value;
+                            
+                            changeEntries.Add(entry);
+                        }
+                    }
+
+                    client.ChangesEntries = changeEntries;
                     clients.Add(client);
                 }                                             
             }
             return clients;       
+        }
+        public static void AddChangeEntriesNode(XmlNode orderNode, List<Client.ChangeEntry> entries)
+        {
+            if (entries == null || entries.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var entry in entries)
+            {
+                var changeEntry = orderNode.OwnerDocument.CreateElement("story");
+                changeEntry.SetAttribute("name", entry.Name);
+                changeEntry.SetAttribute("surname", entry.Surname);
+                changeEntry.SetAttribute("phonenumber", entry.PhoneNumber);
+                changeEntry.SetAttribute("email", entry.Email);
+
+                orderNode.AppendChild(changeEntry);
+            }
+
         }
     }
 }
