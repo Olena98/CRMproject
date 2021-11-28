@@ -345,12 +345,12 @@ namespace CRMproject
                                 break;
                             }
                                         
-                        Console.WriteLine("Return to orders change menu? (Y - to yes):");
+                        Console.WriteLine("Return to clients change menu? (Y - to yes):");
                         changeClient = Console.ReadLine().ToLower() == "y";
                         break;
 
                     case "2":
-                        Console.WriteLine("Return to orders change menu? (Y - to yes):");
+                        Console.WriteLine("Return to clients change menu? (Y - to yes):");
                         changeClient = Console.ReadLine().ToLower() == "y";
                         break;
                 }               
@@ -518,10 +518,133 @@ namespace CRMproject
                 switch (itemNumber) 
                 {
                     case "1":
-                        Console.WriteLine("Please, enter your phone number to search clients: ");
-                        string phoneNumber = Console.ReadLine();
+                        Console.WriteLine("Please, enter product number to search products: ");                      
+                        int number;
+                        bool numberOfProduct = int.TryParse(Console.ReadLine(), out number);
+                        var resultNumber = ProductService.GetProductsByNumber(number);
+                        OutputChangeProductList(resultNumber);
+                        Console.WriteLine($"Please, select number of product (0-{resultNumber.Count - 1}): ");
+                        int index;
+                        if (int.TryParse(Console.ReadLine(), out index))
+                        {
+                            Console.WriteLine(resultNumber[index]);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Inccorect input, please, try again!");
+                        }
+                        Console.WriteLine("Maybe, you want to add changes to product? (Y - to yes): ");
+                        if (changeProduct = Console.ReadLine().ToLower() == "y")
+                        {
+                            Console.WriteLine("\n\t1.Set new product name \n\t2. Set new product price\n\t3. Set new product number \n\t4. Set new product existence");
+                            Console.WriteLine("Enter item number: ");
+                            string setChanges = Console.ReadLine();
+                            switch (setChanges)
+                            {
+                                case "1":
+                                    Console.WriteLine("Please, set new product name: ");
+                                    string changedName = Console.ReadLine();
+                                    if (String.IsNullOrWhiteSpace(changedName))
+                                    {
+                                        Console.WriteLine("Inccorect input, please, try again!");
+                                    }
+                                    else
+                                    {
+                                        if (changedName == resultNumber[index].ProductName)
+                                        {
+                                            Console.WriteLine("You entered same name of the product.");
+                                        }
+                                        else
+                                        {
+                                            var newChangeEntry = new Product.ChangeEntry();
+                                            newChangeEntry.ProductName = resultNumber[index].ProductName;
+                                            resultNumber[index].ChangesEntries.Add(newChangeEntry);
+                                            resultNumber[index].ProductName = changedName;
+                                           
+                                        }
+                                    }
+                                    break;
+                                case "2":
+                                    Console.WriteLine("Please, set new product price: ");
+                                    decimal changedPrice;
+                                    if(decimal.TryParse(Console.ReadLine(), out changedPrice)) 
+                                    {
+                                        if (changedPrice == resultNumber[index].Price)
+                                        {
+                                            Console.WriteLine("You entered same price of the product.");
+                                        }
+                                        else
+                                        {
+                                            var newChangeEntry = new Product.ChangeEntry();
+                                            newChangeEntry.Price = resultNumber[index].Price;
+                                            resultNumber[index].ChangesEntries.Add(newChangeEntry);
+                                            resultNumber[index].Price = changedPrice;
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        Console.WriteLine("Inccorect input, please, try again!");
+                                    }
+
+                                    break;
+                                case "3":
+                                    Console.WriteLine("Please, set new product number: ");
+                                    int changedNumber;
+                                    if (int.TryParse(Console.ReadLine(), out changedNumber)) 
+                                    { 
+                                        if(changedNumber == resultNumber[index].ProductNumber) 
+                                        {
+                                            Console.WriteLine("You entered same number of the product.");
+                                        }
+                                        else 
+                                        {
+                                            var newChangeEntry = new Product.ChangeEntry();
+                                            newChangeEntry.ProductNumber = resultNumber[index].ProductNumber;
+                                            resultNumber[index].ChangesEntries.Add(newChangeEntry);
+                                            resultNumber[index].ProductNumber = changedNumber;
+                                        
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        Console.WriteLine("Inccorect input, please, try again!");
+                                    }
+                                    break;
+                                case "4":
+                                    Console.WriteLine("Please, set new product existence: ");
+                                    bool changedExistence;
+                                    if (bool.TryParse(Console.ReadLine(), out changedExistence)) 
+                                    {
+                                        if (changedExistence == resultNumber[index].Existence) 
+                                        {
+                                            Console.WriteLine("You entered same existence of the product.");
+                                        }
+                                        else 
+                                        {
+                                            var newChangeEntry = new Product.ChangeEntry();
+                                            newChangeEntry.Existence = resultNumber[index].Existence;
+                                            resultNumber[index].ChangesEntries.Add(newChangeEntry);
+                                            resultNumber[index].Existence = changedExistence;
+                                        
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        Console.WriteLine("Inccorect input, please, try again!");
+                                    }
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        Console.WriteLine("Return to products change menu? (Y - to yes):");
+                        changeProduct = Console.ReadLine().ToLower() == "y";
                         break;
                     case "2":
+                        Console.WriteLine("Return to products change menu? (Y - to yes):");
+                        changeProduct = Console.ReadLine().ToLower() == "y";
                         break;
 
 
