@@ -19,7 +19,7 @@ namespace CRMproject
             while (returnUserMenu)
             {
                 Console.WriteLine("Main menu\n\t1.Add new client\n\t2.Search client\n\t3.Change client");
-                Console.WriteLine("\t4.Add product\n\t5.Search product\n\t6.Add order\n\t7.Search order\n\t8.Change order\n\t9.Clear all");
+                Console.WriteLine("\t4.Add product\n\t5.Search product\n\t6.Change product\n\t7.Add order\n\t8.Search order\n\t9.Change order\n\t10.Clear all");
                 Console.WriteLine("Enter the item number");
                 string selection = Console.ReadLine();
                 switch (selection)
@@ -55,24 +55,30 @@ namespace CRMproject
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
                     case "6":
+                        Console.WriteLine("You have chosen by change product");
+                        ChangeProduct();
+                        Console.WriteLine("Return to main menu? (Y - to yes):");
+                        returnUserMenu = Console.ReadLine().ToLower() == "y";
+                        break;
+                    case "7":
                         Console.WriteLine("You have chosen by add order");
                         AddOrder();
                         Console.WriteLine("Return to main menu? (Y - to yes):");
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
-                    case "7":
+                    case "8":
                         Console.WriteLine("You have chosen by search order");
                         SearchOrder();
                         Console.WriteLine("Return to main menu? (Y - to yes):");
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
-                    case "8":
+                    case "9":
                         Console.WriteLine("You have chosen by change order");
                         ChangeOrder();
                         Console.WriteLine("Return to main menu? (Y - to yes):");
                         returnUserMenu = Console.ReadLine().ToLower() == "y";
                         break;
-                    case "9":
+                    case "10":
                         Console.WriteLine("You have chosen by search product");
                         Console.Clear();
                         Console.WriteLine("Return to main menu? (Y - to yes):");
@@ -216,13 +222,11 @@ namespace CRMproject
                 switch (itemNumber) 
                 {
                     case "1":
-                        Console.WriteLine("Please, enter your phone number to search orders: ");
+                        Console.WriteLine("Please, enter your phone number to search clients: ");
                         string phoneNumber = Console.ReadLine();
                         var resultPhone = ClientsService.GetClientsByPhone(phoneNumber);
                         OutputChangeClientList(resultPhone);
-                        Console.WriteLine($"Please, select number of client (0-{resultPhone.Count - 1}): ");
-                        if (resultPhone.Count != 0)
-                        {
+                        Console.WriteLine($"Please, select number of client (0-{resultPhone.Count - 1}): ");                       
                             int index;
                             if (int.TryParse(Console.ReadLine(), out index))
                             {
@@ -232,7 +236,7 @@ namespace CRMproject
                             {
                                 Console.WriteLine("Inccorect input, please, try again!");
                             }
-
+                        
                             Console.WriteLine("Maybe, you want to add changes to client? (Y - to yes): ");
                             if (changeClient = Console.ReadLine().ToLower() == "y")
                             {
@@ -340,11 +344,7 @@ namespace CRMproject
                             {
                                 break;
                             }
-                        }
-                        else 
-                        {
-                            break;
-                        }                       
+                                        
                         Console.WriteLine("Return to orders change menu? (Y - to yes):");
                         changeClient = Console.ReadLine().ToLower() == "y";
                         break;
@@ -505,6 +505,44 @@ namespace CRMproject
                         searchproduct = Console.ReadLine().ToLower() == "y";
                         break;
                 }
+            }
+        }
+        static void ChangeProduct() 
+        {
+            var changeProduct = true;
+            while (changeProduct) 
+            {
+                Console.WriteLine("Change product menu\n\t1. Find product for changes and set changes\n\t2. Exit");
+                Console.WriteLine("Enter item number: ");
+                string itemNumber = Console.ReadLine();
+                switch (itemNumber) 
+                {
+                    case "1":
+                        Console.WriteLine("Please, enter your phone number to search clients: ");
+                        string phoneNumber = Console.ReadLine();
+                        break;
+                    case "2":
+                        break;
+
+
+                }
+            }
+        }
+        static void OutputChangeProductList(List<Product>products) 
+        {
+            Console.WriteLine("Count of products: " + products.Count);
+            for (int i = 0; i < products.Count; i++)
+            {
+                Console.WriteLine(i);
+                Console.WriteLine("Product name: " + products[i].ProductName);
+                Console.WriteLine("Product description: " + products[i].Description);
+                Console.WriteLine("Product price: " + products[i].Price);
+                Console.WriteLine("Product number: " + products[i].ProductNumber);
+                Console.WriteLine("Product existence: " + products[i].Existence);
+                Console.WriteLine("Id" + products[i].Id);
+
+                Console.WriteLine();
+
             }
         }
 

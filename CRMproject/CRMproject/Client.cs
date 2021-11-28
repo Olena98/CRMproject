@@ -19,7 +19,12 @@ namespace CRMproject
         {
             var result = "Client Name: " + Name + "\n\t Client LastName: " + LastName + "\n\t Client Surname: " + Surname + "\n\t Client email: " + Email +
                 "\n\t Client phone: " + PhoneNumber + "\n\t Client Id: " + Id.ToString();
-           
+            result += $"\n\tChange Entries Count: {ChangesEntries.Count}\n";
+            foreach (var entry in ChangesEntries)
+            {
+                result += $"\t\t{entry.Name} - {entry.Surname} - {entry.PhoneNumber}-{entry.Email}\n";
+            }
+            result = result.Remove(result.Length - 1);
             return result;
         }
 
