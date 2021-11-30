@@ -18,61 +18,44 @@ namespace CRMproject
             Products = ReadXmlFile(xmlPath);
         }
         public static void AddNewProduct(Product product) 
-        {
-            SaveProduct(product);
+        {          
             Products.Add(product);
-          
+            SaveProductList();
+
         }
-        public static void SaveProduct(Product product) 
-        {           
-            FileInfo fileInf = new FileInfo(xmlPath);
+        public static void SaveProductList() 
+        {
+            if (Products == null || Products.Count == 0)
+            {
+                return;
+            }
+            
             XmlDocument xDoc = new XmlDocument();
-            XmlNode rootElement = null;
+            XmlNode rootElement = xDoc.CreateNode(XmlNodeType.Element, "products", string.Empty);
+            xDoc.AppendChild(rootElement);
 
-            try
+            foreach (var order in Products)
             {
-                if (fileInf.Exists)
-                {
-                    xDoc.Load(xmlPath);
-                    rootElement = xDoc.DocumentElement;
-                }
-                else
-                {
-                    File.Create(xmlPath);
-                    rootElement = xDoc.CreateNode(XmlNodeType.Element, "products", string.Empty);
-                    xDoc.AppendChild(rootElement);
-                }
+                AppendOrderNode(rootElement, order);
             }
-            catch
-            {
-                rootElement = xDoc.CreateNode(XmlNodeType.Element, "products", string.Empty);
-                xDoc.AppendChild(rootElement);
-                Console.WriteLine("An exception was thrown!");
-            }
-            XmlElement productElem = xDoc.CreateElement("product");
 
-            XmlAttribute productNameAttr = xDoc.CreateAttribute("productName");
-            productNameAttr.Value = product.ProductName;
-            XmlAttribute descriptionAttr = xDoc.CreateAttribute("description");
-            descriptionAttr.Value = product.Description;
-            XmlAttribute priceAttr = xDoc.CreateAttribute("price");
-            priceAttr.Value = product.Price.ToString();
-            XmlAttribute productNumberAttr = xDoc.CreateAttribute("productNumber");
-            productNumberAttr.Value = product.ProductNumber.ToString();
-            XmlAttribute existenceAttr = xDoc.CreateAttribute("existence");
-            existenceAttr.Value = product.Existence.ToString();
-            XmlAttribute guidAttr = xDoc.CreateAttribute("guid");
-            guidAttr.Value = product.Id.ToString();
-
-            productElem.Attributes.Append(productNameAttr);
-            productElem.Attributes.Append(descriptionAttr);
-            productElem.Attributes.Append(priceAttr);
-            productElem.Attributes.Append(productNumberAttr);
-            productElem.Attributes.Append(existenceAttr);
-            productElem.Attributes.Append(guidAttr);
-
-            rootElement.AppendChild(productElem);
             xDoc.Save(xmlPath);
+
+        }
+        private static void AppendOrderNode(XmlNode parentNode, Product product) 
+        {
+            XmlElement productElem = parentNode.OwnerDocument.CreateElement("product");
+            productElem.SetAttribute("guid", product.Id.ToString());
+            productElem.SetAttribute("productName", product.ProductName);
+            productElem.SetAttribute("description", product.Description);
+            productElem.SetAttribute("price", product.Price.ToString());
+            productElem.SetAttribute("productNumber", product.ProductNumber.ToString());
+            productElem.SetAttribute("existence", product.Existence.ToString());
+           
+
+            AddChangeEntriesNode(productElem, product.ChangesEntries);
+
+            parentNode.AppendChild(productElem);
         }
         public static List<Product> ReadXmlFile(string xmlPath)
         {
@@ -127,11 +110,44 @@ namespace CRMproject
                     {
                         product.Id = Guid.Parse(attrGuid.Value);
                     }
+                    var changeEntries = new List<Product.ChangeEntry>();
+                    foreach (XmlNode storyNode in xnode.ChildNodes)
+                    {
+                        if (storyNode.Name.Equals("story"))
+                        {
+                            var entry = new Product.ChangeEntry();
+                            entry.ProductName =  storyNode.Attributes["productName"].Value;
+                            entry.ProductNumber = Convert.ToInt32(storyNode.Attributes["productNumber"].Value);
+                            entry.Price = Convert.ToDecimal(storyNode.Attributes["price"].Value);
+                            entry.Existence = Convert.ToBoolean(storyNode.Attributes["existence"].Value);
+                            changeEntries.Add(entry);
+                        }
+                    }
+                    product.ChangesEntries = changeEntries;
                     products.Add(product);
                 }
             }
             return products;
         }
-      
+        public static void AddChangeEntriesNode(XmlNode productNode, List<Product.ChangeEntry> entries)
+        {
+            if (entries == null || entries.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var entry in entries)
+            {
+                var changeEntry = productNode.OwnerDocument.CreateElement("story");
+                changeEntry.SetAttribute("productName", entry.ProductName);
+                changeEntry.SetAttribute("productNumber", entry.ProductNumber.ToString());
+                changeEntry.SetAttribute("price", entry.Price.ToString());
+                changeEntry.SetAttribute("existence", entry.Existence.ToString());
+
+                productNode.AppendChild(changeEntry);
+            }
+
+        }
+
     }
 }

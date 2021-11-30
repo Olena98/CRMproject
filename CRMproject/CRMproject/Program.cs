@@ -560,7 +560,7 @@ namespace CRMproject
                                             newChangeEntry.ProductName = resultNumber[index].ProductName;
                                             resultNumber[index].ChangesEntries.Add(newChangeEntry);
                                             resultNumber[index].ProductName = changedName;
-                                           
+                                            ProductsDataBase.SaveProductList();
                                         }
                                     }
                                     break;
@@ -579,6 +579,7 @@ namespace CRMproject
                                             newChangeEntry.Price = resultNumber[index].Price;
                                             resultNumber[index].ChangesEntries.Add(newChangeEntry);
                                             resultNumber[index].Price = changedPrice;
+                                            ProductsDataBase.SaveProductList();
                                         }
                                     }
                                     else 
@@ -602,7 +603,7 @@ namespace CRMproject
                                             newChangeEntry.ProductNumber = resultNumber[index].ProductNumber;
                                             resultNumber[index].ChangesEntries.Add(newChangeEntry);
                                             resultNumber[index].ProductNumber = changedNumber;
-                                        
+                                            ProductsDataBase.SaveProductList();
                                         }
                                     }
                                     else 
@@ -625,7 +626,7 @@ namespace CRMproject
                                             newChangeEntry.Existence = resultNumber[index].Existence;
                                             resultNumber[index].ChangesEntries.Add(newChangeEntry);
                                             resultNumber[index].Existence = changedExistence;
-                                        
+                                            ProductsDataBase.SaveProductList();
                                         }
                                     }
                                     else 
